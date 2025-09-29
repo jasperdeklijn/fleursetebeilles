@@ -130,15 +130,15 @@ export async function getPropertyInfo() {
   try {
     const supabase = await createClient()
 
-    const { data: properties, error } = await supabase.from("property_info").select("*").limit(1)
+    const { data: property, error } = await supabase.from("property_info").select("*").maybeSingle()
 
     if (error) {
       console.error("Error fetching property info:", error.message)
       return fallbackPropertyInfo
     }
 
-    // Return the first property or fallback
-    return (properties?.[0] as PropertyInfo) || fallbackPropertyInfo
+    // Return the property or fallback
+    return (property as PropertyInfo) || fallbackPropertyInfo
   } catch (error) {
     console.error("Error in getPropertyInfo:", error)
     return fallbackPropertyInfo

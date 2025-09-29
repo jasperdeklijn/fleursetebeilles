@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
@@ -25,16 +24,10 @@ interface ContentTranslation {
   content: string
 }
 
-const languages = [
-  { code: "en", name: "English" },
-  { code: "nl", name: "Nederlands" },
-  { code: "fr", name: "Français" },
-]
-
 export function ContentEditor() {
   const [sections, setSections] = useState<ContentSection[]>([])
   const [translations, setTranslations] = useState<ContentTranslation[]>([])
-  const [selectedLanguage, setSelectedLanguage] = useState("en")
+  const selectedLanguage = "nl"
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const { toast } = useToast()
@@ -56,10 +49,10 @@ export function ContentEditor() {
 
       if (sectionsError) throw sectionsError
 
-      // Load translations
       const { data: translationsData, error: translationsError } = await supabase
         .from("content_translations")
         .select("*")
+        .eq("language_code", "nl")
 
       if (translationsError) throw translationsError
 
@@ -156,27 +149,15 @@ export function ContentEditor() {
 
   return (
     <div className="space-y-6">
-      {/* Language Selector */}
       <div className="flex justify-between items-center">
         <div>
-          <Label htmlFor="language">Select Language</Label>
-          <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
-            <SelectTrigger className="w-48 mt-1">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {languages.map((lang) => (
-                <SelectItem key={lang.code} value={lang.code}>
-                  {lang.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <h3 className="text-lg font-semibold">Nederlandse Content</h3>
+          <p className="text-sm text-muted-foreground">Bewerk de tekst die op uw website verschijnt</p>
         </div>
 
         <Button onClick={saveContent} disabled={isSaving}>
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-          {isSaving ? "Saving..." : "Save Changes"}
+          {isSaving ? "Opslaan..." : "Wijzigingen Opslaan"}
         </Button>
       </div>
 

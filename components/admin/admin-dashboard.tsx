@@ -63,9 +63,7 @@ export function AdminDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Content Management</CardTitle>
-                <p className="text-muted-foreground">
-                  Edit the text content that appears on your website in multiple languages.
-                </p>
+                <p className="text-muted-foreground">Edit the text content that appears on your website.</p>
               </CardHeader>
               <CardContent>
                 <ContentEditor />
