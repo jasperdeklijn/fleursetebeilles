@@ -7,15 +7,24 @@ interface AmenitiesSectionProps {
 }
 
 const amenityIcons: Record<string, any> = {
+  "Gratis WiFi": Wifi,
   "Free WiFi": Wifi,
+  "Ontbijt Inbegrepen": Coffee,
   "Breakfast Included": Coffee,
+  Airconditioning: Snowflake,
   "Air Conditioning": Snowflake,
+  "Privé Badkamer": Bath,
   "Private Bathroom": Bath,
+  "Uitzicht op de Stad": Eye,
   "City View": Eye,
+  "Niet Roken": Ban,
   "Non-Smoking": Ban,
+  "Parkeren Beschikbaar": Car,
   "Parking Available": Car,
   "Premium Service": Star,
+  Veilig: Shield,
   Secure: Shield,
+  "Toegang tot Keuken": Utensils,
   "Kitchen Access": Utensils,
 }
 

@@ -20,46 +20,44 @@ export function ContactSection({ title, description }: ContactSectionProps) {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {/* Contact Form */}
           <Card>
             <CardHeader>
-              <CardTitle>Send us a message</CardTitle>
+              <CardTitle>Stuur ons een bericht</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" placeholder="John" />
+                  <Label htmlFor="firstName">Voornaam</Label>
+                  <Input id="firstName" placeholder="Jan" />
                 </div>
                 <div>
-                  <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" placeholder="Doe" />
+                  <Label htmlFor="lastName">Achternaam</Label>
+                  <Input id="lastName" placeholder="de Vries" />
                 </div>
               </div>
               <div>
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="john@example.com" />
+                <Label htmlFor="email">E-mail</Label>
+                <Input id="email" type="email" placeholder="jan@voorbeeld.nl" />
               </div>
               <div>
-                <Label htmlFor="dates">Preferred Dates</Label>
-                <Input id="dates" placeholder="Check-in to Check-out" />
+                <Label htmlFor="dates">Gewenste Data</Label>
+                <Input id="dates" placeholder="Inchecken tot Uitchecken" />
               </div>
               <div>
-                <Label htmlFor="message">Message</Label>
-                <Textarea id="message" placeholder="Tell us about your stay preferences..." rows={4} />
+                <Label htmlFor="message">Bericht</Label>
+                <Textarea id="message" placeholder="Vertel ons over uw verblijfvoorkeuren..." rows={4} />
               </div>
-              <Button className="w-full">Send Message</Button>
+              <Button className="w-full">Bericht Versturen</Button>
             </CardContent>
           </Card>
 
-          {/* Contact Information */}
           <div className="space-y-6">
             <Card className="p-6">
               <div className="flex items-center gap-4">
                 <Mail className="h-6 w-6 text-primary" />
                 <div>
-                  <h3 className="font-semibold">Email</h3>
-                  <p className="text-muted-foreground">info@beautifulbnb.com</p>
+                  <h3 className="font-semibold">E-mail</h3>
+                  <p className="text-muted-foreground">info@prachtigebnb.nl</p>
                 </div>
               </div>
             </Card>
@@ -68,7 +66,7 @@ export function ContactSection({ title, description }: ContactSectionProps) {
               <div className="flex items-center gap-4">
                 <Phone className="h-6 w-6 text-primary" />
                 <div>
-                  <h3 className="font-semibold">Phone</h3>
+                  <h3 className="font-semibold">Telefoon</h3>
                   <p className="text-muted-foreground">+31 20 123 4567</p>
                 </div>
               </div>
@@ -78,23 +76,23 @@ export function ContactSection({ title, description }: ContactSectionProps) {
               <div className="flex items-center gap-4">
                 <MapPin className="h-6 w-6 text-primary" />
                 <div>
-                  <h3 className="font-semibold">Address</h3>
+                  <h3 className="font-semibold">Adres</h3>
                   <p className="text-muted-foreground">
-                    123 Main Street
+                    Hoofdstraat 123
                     <br />
-                    City Center
+                    Stadscentrum
                   </p>
                 </div>
               </div>
             </Card>
 
             <Card className="p-6 bg-primary text-primary-foreground">
-              <h3 className="font-semibold mb-2">Quick Booking</h3>
+              <h3 className="font-semibold mb-2">Snelle Boeking</h3>
               <p className="text-sm opacity-90 mb-4">
-                For immediate bookings, call us directly or use our online booking system.
+                Voor directe boekingen, bel ons rechtstreeks of gebruik ons online boekingssysteem.
               </p>
               <Button variant="secondary" className="w-full">
-                Book Now
+                Nu Boeken
               </Button>
             </Card>
           </div>

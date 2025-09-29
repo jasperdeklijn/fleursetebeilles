@@ -15,13 +15,16 @@ export function HeroSection({ title, subtitle, ctaText, propertyImages }: HeroSe
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={propertyImages[0] || "/placeholder.svg?height=800&width=1200&query=beautiful bnb exterior"}
-          alt="BnB Property"
+          src={
+            propertyImages[0] ||
+            "/placeholder.svg?height=800&width=1200&query=peaceful dutch countryside nature green fields trees"
+          }
+          alt="Natuurlijke omgeving"
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       {/* Content */}

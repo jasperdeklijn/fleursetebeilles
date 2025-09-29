@@ -25,14 +25,14 @@ export function PricingSection({ title, description, property }: PricingSectionP
             <div className="flex items-center justify-center gap-2 text-3xl font-bold text-primary">
               <Euro className="h-8 w-8" />
               {property.price_per_night}
-              <span className="text-lg text-muted-foreground font-normal">/ night</span>
+              <span className="text-lg text-muted-foreground font-normal">/ nacht</span>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b">
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-muted-foreground" />
-                <span>Max Guests</span>
+                <span>Max Gasten</span>
               </div>
               <Badge variant="secondary">{property.max_guests}</Badge>
             </div>
@@ -40,19 +40,19 @@ export function PricingSection({ title, description, property }: PricingSectionP
             <div className="flex justify-between items-center py-2 border-b">
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4 text-muted-foreground" />
-                <span>Minimum Stay</span>
+                <span>Minimum Verblijf</span>
               </div>
-              <Badge variant="secondary">2 nights</Badge>
+              <Badge variant="secondary">2 nachten</Badge>
             </div>
 
             <div className="pt-4">
               <Button className="w-full" size="lg">
-                Check Availability
+                Beschikbaarheid Controleren
               </Button>
             </div>
 
             <p className="text-xs text-muted-foreground text-center">
-              Prices may vary based on season and availability
+              Prijzen kunnen variëren op basis van seizoen en beschikbaarheid
             </p>
           </CardContent>
         </Card>
