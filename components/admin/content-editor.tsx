@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
-import { Loader2, Save, Languages } from "lucide-react"
+import { Loader as Loader2, Save, Languages } from "lucide-react"
 
 interface ContentSection {
   id: string
