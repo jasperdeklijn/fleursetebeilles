@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
-import { Loader2, Save } from "lucide-react"
+import { Loader2, Save, Languages } from "lucide-react"
 
 interface ContentSection {
   id: string
@@ -24,10 +25,20 @@ interface ContentTranslation {
   content: string
 }
 
+const languages = [
+  { code: "nl", name: "Nederlands", flag: "🇳🇱" },
+  { code: "en", name: "English", flag: "🇬🇧" },
+  { code: "fr", name: "Français", flag: "🇫🇷" },
+]
+
 export function ContentEditor() {
   const [sections, setSections] = useState<ContentSection[]>([])
-  const [translations, setTranslations] = useState<ContentTranslation[]>([])
-  const selectedLanguage = "nl"
+  const [translations, setTranslations] = useState<Record<string, ContentTranslation[]>>({
+    nl: [],
+    en: [],
+    fr: [],
+  })
+  const [selectedLanguage, setSelectedLanguage] = useState("nl")
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const { toast } = useToast()
@@ -41,7 +52,6 @@ export function ContentEditor() {
     setIsLoading(true)
 
     try {
-      // Load sections
       const { data: sectionsData, error: sectionsError } = await supabase
         .from("content_sections")
         .select("*")
@@ -52,12 +62,24 @@ export function ContentEditor() {
       const { data: translationsData, error: translationsError } = await supabase
         .from("content_translations")
         .select("*")
-        .eq("language_code", "nl")
 
       if (translationsError) throw translationsError
 
       setSections(sectionsData || [])
-      setTranslations(translationsData || [])
+
+      const translationsByLanguage: Record<string, ContentTranslation[]> = {
+        nl: [],
+        en: [],
+        fr: [],
+      }
+
+      translationsData?.forEach((translation) => {
+        if (translationsByLanguage[translation.language_code]) {
+          translationsByLanguage[translation.language_code].push(translation)
+        }
+      })
+
+      setTranslations(translationsByLanguage)
     } catch (error) {
       console.error("Error loading content:", error)
       toast({
@@ -70,21 +92,27 @@ export function ContentEditor() {
     }
   }
 
-  const updateTranslation = (sectionId: string, content: string) => {
+  const updateTranslation = (sectionId: string, content: string, langCode: string) => {
     setTranslations((prev) => {
-      const existing = prev.find((t) => t.section_id === sectionId && t.language_code === selectedLanguage)
+      const langTranslations = prev[langCode] || []
+      const existing = langTranslations.find((t) => t.section_id === sectionId && t.language_code === langCode)
 
       if (existing) {
-        return prev.map((t) => (t.id === existing.id ? { ...t, content } : t))
+        return {
+          ...prev,
+          [langCode]: langTranslations.map((t) => (t.id === existing.id ? { ...t, content } : t)),
+        }
       } else {
-        // Create new translation
         const newTranslation: ContentTranslation = {
-          id: `temp-${Date.now()}`,
+          id: `temp-${Date.now()}-${langCode}`,
           section_id: sectionId,
-          language_code: selectedLanguage,
+          language_code: langCode,
           content,
         }
-        return [...prev, newTranslation]
+        return {
+          ...prev,
+          [langCode]: [...langTranslations, newTranslation],
+        }
       }
     })
   }
@@ -94,10 +122,10 @@ export function ContentEditor() {
     setIsSaving(true)
 
     try {
-      // Update existing translations and insert new ones
-      for (const translation of translations) {
+      const allTranslations = Object.values(translations).flat()
+
+      for (const translation of allTranslations) {
         if (translation.id.startsWith("temp-")) {
-          // Insert new translation
           const { error } = await supabase.from("content_translations").insert({
             section_id: translation.section_id,
             language_code: translation.language_code,
@@ -105,7 +133,6 @@ export function ContentEditor() {
           })
           if (error) throw error
         } else {
-          // Update existing translation
           const { error } = await supabase
             .from("content_translations")
             .update({ content: translation.content })
@@ -119,7 +146,6 @@ export function ContentEditor() {
         description: "Content updated successfully!",
       })
 
-      // Reload content to get fresh IDs
       await loadContent()
     } catch (error) {
       console.error("Error saving content:", error)
@@ -133,8 +159,9 @@ export function ContentEditor() {
     }
   }
 
-  const getTranslationContent = (sectionId: string) => {
-    const translation = translations.find((t) => t.section_id === sectionId && t.language_code === selectedLanguage)
+  const getTranslationContent = (sectionId: string, langCode: string) => {
+    const langTranslations = translations[langCode] || []
+    const translation = langTranslations.find((t) => t.section_id === sectionId && t.language_code === langCode)
     return translation?.content || ""
   }
 
@@ -147,21 +174,8 @@ export function ContentEditor() {
     )
   }
 
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg font-semibold">Nederlandse Content</h3>
-          <p className="text-sm text-muted-foreground">Bewerk de tekst die op uw website verschijnt</p>
-        </div>
-
-        <Button onClick={saveContent} disabled={isSaving}>
-          {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-          {isSaving ? "Opslaan..." : "Wijzigingen Opslaan"}
-        </Button>
-      </div>
-
-      {/* Content Sections */}
+  const renderContentFields = (langCode: string) => {
+    return (
       <div className="grid gap-4">
         {sections.map((section) => (
           <Card key={section.id}>
@@ -172,22 +186,22 @@ export function ContentEditor() {
             <CardContent>
               {section.content_type === "rich_text" ? (
                 <div>
-                  <Label htmlFor={section.id}>Content</Label>
+                  <Label htmlFor={`${section.id}-${langCode}`}>Content</Label>
                   <Textarea
-                    id={section.id}
-                    value={getTranslationContent(section.id)}
-                    onChange={(e) => updateTranslation(section.id, e.target.value)}
+                    id={`${section.id}-${langCode}`}
+                    value={getTranslationContent(section.id, langCode)}
+                    onChange={(e) => updateTranslation(section.id, e.target.value, langCode)}
                     rows={4}
                     className="mt-1"
                   />
                 </div>
               ) : (
                 <div>
-                  <Label htmlFor={section.id}>Content</Label>
+                  <Label htmlFor={`${section.id}-${langCode}`}>Content</Label>
                   <Input
-                    id={section.id}
-                    value={getTranslationContent(section.id)}
-                    onChange={(e) => updateTranslation(section.id, e.target.value)}
+                    id={`${section.id}-${langCode}`}
+                    value={getTranslationContent(section.id, langCode)}
+                    onChange={(e) => updateTranslation(section.id, e.target.value, langCode)}
                     className="mt-1"
                   />
                 </div>
@@ -196,6 +210,42 @@ export function ContentEditor() {
           </Card>
         ))}
       </div>
+    )
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <Languages className="h-5 w-5" />
+          <div>
+            <h3 className="text-lg font-semibold">Multi-Language Content</h3>
+            <p className="text-sm text-muted-foreground">Edit content for all languages</p>
+          </div>
+        </div>
+
+        <Button onClick={saveContent} disabled={isSaving}>
+          {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+          {isSaving ? "Saving..." : "Save Changes"}
+        </Button>
+      </div>
+
+      <Tabs value={selectedLanguage} onValueChange={setSelectedLanguage}>
+        <TabsList className="grid w-full grid-cols-3 max-w-md">
+          {languages.map((lang) => (
+            <TabsTrigger key={lang.code} value={lang.code} className="flex items-center gap-2">
+              <span>{lang.flag}</span>
+              <span>{lang.name}</span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {languages.map((lang) => (
+          <TabsContent key={lang.code} value={lang.code}>
+            {renderContentFields(lang.code)}
+          </TabsContent>
+        ))}
+      </Tabs>
     </div>
   )
 }
