@@ -7,6 +7,8 @@ import { ContactSection } from "@/components/contact-section"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
+export const dynamic = 'force-dynamic'
+
 export default async function HomePage() {
   const content = await getContent("nl")
   const property = await getPropertyInfo()
