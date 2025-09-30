@@ -10,8 +10,8 @@ import Link from "next/link"
 
 export const dynamic = 'force-dynamic'
 
-export default async function HomePage() {
-  const content = await getContent("nl")
+export default async function EnglishPage() {
+  const content = await getContent("en")
   const property = await getPropertyInfo()
 
   if (!property) {
@@ -36,39 +36,39 @@ export default async function HomePage() {
       {/* Main Content */}
       <main>
         <HeroSection
-          title={content.hero_title || "Welkom bij Onze Prachtige BnB"}
-          subtitle={content.hero_subtitle || "Ervaar comfort en luxe"}
-          ctaText={content.hero_cta || "Boek Uw Verblijf"}
+          title={content.hero_title || "Welcome to Our Beautiful BnB"}
+          subtitle={content.hero_subtitle || "Experience comfort and luxury"}
+          ctaText={content.hero_cta || "Book Your Stay"}
           propertyImages={property.images}
         />
 
         <AboutSection
-          title={content.about_title || "Over Ons Pand"}
-          description={content.about_description || "Onze charmante bed and breakfast..."}
+          title={content.about_title || "About Our Property"}
+          description={content.about_description || "Our charming bed and breakfast..."}
           property={property}
         />
 
         <AmenitiesSection
-          title={content.amenities_title || "Voorzieningen & Faciliteiten"}
+          title={content.amenities_title || "Amenities & Features"}
           amenities={property.amenities}
         />
 
         <PricingSection
-          title={content.pricing_title || "Prijzen & Beschikbaarheid"}
-          description={content.pricing_description || "Concurrerende tarieven met uitzonderlijke waarde"}
+          title={content.pricing_title || "Pricing & Availability"}
+          description={content.pricing_description || "Competitive rates with exceptional value"}
           property={property}
         />
 
         <ContactSection
-          title={content.contact_title || "Neem Contact Op"}
-          description={content.contact_description || "Klaar om uw verblijf te boeken?"}
+          title={content.contact_title || "Get In Touch"}
+          description={content.contact_description || "Ready to book your stay?"}
         />
       </main>
 
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-8 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <p>{content.footer_text || "© 2025 Beautiful BnB. Alle rechten voorbehouden."}</p>
+          <p>{content.footer_text || "© 2025 Beautiful BnB. All rights reserved."}</p>
         </div>
       </footer>
     </div>
