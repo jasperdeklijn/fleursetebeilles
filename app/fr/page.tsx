@@ -26,9 +26,6 @@ export default async function FrenchPage() {
           <div className="text-white font-bold text-xl">{property.name}</div>
           <div className="flex items-center gap-4">
             <LanguageSelector />
-            <Button asChild variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-              <Link href="/admin">Admin</Link>
-            </Button>
           </div>
         </div>
       </header>
