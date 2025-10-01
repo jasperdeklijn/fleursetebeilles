@@ -12,8 +12,8 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default function Page() {
-  const [email, setEmail] = useState("jasperdeklijn@gmail.com")
-  const [password, setPassword] = useState("admintest123")
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
