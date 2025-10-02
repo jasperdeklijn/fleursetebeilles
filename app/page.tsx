@@ -1,17 +1,17 @@
+// app/page.tsx (Server Component - async allowed)
 import { getContent, getPropertyInfo } from "@/lib/content"
 import { HeroSection } from "@/components/hero-section"
 import { AboutSection } from "@/components/about-section"
 import { AmenitiesSection } from "@/components/amenities-section"
 import { PricingSection } from "@/components/pricing-section"
 import { ContactSection } from "@/components/contact-section"
-import { Button } from "@/components/ui/button"
 import { LanguageSelector } from "@/components/language-selector"
-import Link from "next/link"
+import ClientNav from "@/components/client-nav"
 
 export const dynamic = 'force-dynamic'
 
-// Supported language codes
-type Lang = 'en' | 'fr' | 'nl'
+type Lang = "en" | "fr" | "nl"
+
 
 // Default fallback texts for each language
 const fallbackTexts: Record<Lang, {
@@ -70,9 +70,9 @@ const fallbackTexts: Record<Lang, {
 }
 
 export default async function HomePage({ searchParams }: { searchParams?: { lang?: string } }) {
-  // Get language from query param, default to 'en'
   const langParam = searchParams?.lang
   const lang: Lang = (langParam === "en" || langParam === "fr" || langParam === "nl") ? langParam : "nl"
+
   const content = await getContent(lang)
   const property = await getPropertyInfo()
   const fallback = fallbackTexts[lang] || fallbackTexts.en
@@ -83,49 +83,50 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="absolute top-0 left-0 right-0 z-20 p-4">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="text-white font-bold text-xl">{property.name}</div>
-          <div className="flex items-center gap-4">
-            <LanguageSelector />
-          </div>
-        </div>
-      </header>
+      {/* Header (client-side nav + smooth scrolling) */}
+      <ClientNav propertyName={property.name} lang={lang} />
 
-      {/* Main Content */}
       <main>
-        <HeroSection
-          title={content.hero_title || fallback.hero_title}
-          subtitle={content.hero_subtitle || fallback.hero_subtitle}
-          ctaText={content.hero_cta || fallback.hero_cta}
-          propertyImages={property.images}
-        />
+        <section id="hero">
+          <HeroSection
+            title={content.hero_title || fallback.hero_title}
+            subtitle={content.hero_subtitle || fallback.hero_subtitle}
+            ctaText={content.hero_cta || fallback.hero_cta}
+            propertyImages={property.images}
+          />
+        </section>
 
-        <AboutSection
-          title={content.about_title || fallback.about_title}
-          description={content.about_description || fallback.about_description}
-          property={property}
-        />
+        <section id="about">
+          <AboutSection
+            title={content.about_title || fallback.about_title}
+            description={content.about_description || fallback.about_description}
+            property={property}
+          />
+        </section>
 
-        <AmenitiesSection
-          title={content.amenities_title || fallback.amenities_title}
-          amenities={property.amenities}
-        />
+        <section id="amenities">
+          <AmenitiesSection
+            title={content.amenities_title || fallback.amenities_title}
+            amenities={property.amenities}
+          />
+        </section>
 
-        <PricingSection
-          title={content.pricing_title || fallback.pricing_title}
-          description={content.pricing_description || fallback.pricing_description}
-          property={property}
-        />
+        <section id="pricing">
+          <PricingSection
+            title={content.pricing_title || fallback.pricing_title}
+            description={content.pricing_description || fallback.pricing_description}
+            property={property}
+          />
+        </section>
 
-        <ContactSection
-          title={content.contact_title || fallback.contact_title}
-          description={content.contact_description || fallback.contact_description}
-        />
+        <section id="contact">
+          <ContactSection
+            title={content.contact_title || fallback.contact_title}
+            description={content.contact_description || fallback.contact_description}
+          />
+        </section>
       </main>
 
-      {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-8 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <p>{content.footer_text || fallback.footer_text}</p>
