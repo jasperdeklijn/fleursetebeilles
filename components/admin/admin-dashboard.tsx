@@ -28,17 +28,17 @@ export function AdminDashboard() {
       <header className="bg-background border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">BnB Admin Panel</h1>
+            <h1 className="text-2xl font-bold">BnB Beheer Paneel</h1>
             <div className="flex items-center gap-4">
               <Button asChild variant="outline" size="sm">
                 <Link href="/">
                   <Home className="h-4 w-4 mr-2" />
-                  View Site
+                  Bekijk website
                 </Link>
               </Button>
               <Button variant="outline" size="sm" onClick={handleLogout} disabled={isLoggingOut}>
                 <LogOut className="h-4 w-4 mr-2" />
-                {isLoggingOut ? "Logging out..." : "Logout"}
+                {isLoggingOut ? "Bezig met uitloggen..." : "Uitloggen"}
               </Button>
             </div>
           </div>
@@ -51,19 +51,19 @@ export function AdminDashboard() {
           <TabsList className="grid w-full grid-cols-2 max-w-md">
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
-              Content
+              Inhoud
             </TabsTrigger>
             <TabsTrigger value="property" className="flex items-center gap-2">
               <Building className="h-4 w-4" />
-              Property
+              Eigendom
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="content">
             <Card>
               <CardHeader>
-                <CardTitle>Content Management</CardTitle>
-                <p className="text-muted-foreground">Edit the text content that appears on your website.</p>
+                <CardTitle>Inhoud beheren</CardTitle>
+                <p className="text-muted-foreground">Bewerk de tekst die op uw website verschijnt.</p>
               </CardHeader>
               <CardContent>
                 <ContentEditor />
@@ -74,8 +74,8 @@ export function AdminDashboard() {
           <TabsContent value="property">
             <Card>
               <CardHeader>
-                <CardTitle>Property Information</CardTitle>
-                <p className="text-muted-foreground">Update your property details, pricing, and amenities.</p>
+                <CardTitle>Eigendom informatie</CardTitle>
+                <p className="text-muted-foreground">Werk uw eigendomsgegevens, prijzen en voorzieningen bij.</p>
               </CardHeader>
               <CardContent>
                 <PropertyEditor />

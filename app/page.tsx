@@ -10,9 +10,72 @@ import Link from "next/link"
 
 export const dynamic = 'force-dynamic'
 
-export default async function HomePage() {
-  const content = await getContent("nl")
+// Supported language codes
+type Lang = 'en' | 'fr' | 'nl'
+
+// Default fallback texts for each language
+const fallbackTexts: Record<Lang, {
+  hero_title: string
+  hero_subtitle: string
+  hero_cta: string
+  about_title: string
+  about_description: string
+  amenities_title: string
+  pricing_title: string
+  pricing_description: string
+  contact_title: string
+  contact_description: string
+  footer_text: string
+}> = {
+  en: {
+    hero_title: "Welcome to Our Beautiful BnB",
+    hero_subtitle: "Experience comfort and luxury",
+    hero_cta: "Book Your Stay",
+    about_title: "About Our Property",
+    about_description: "Our charming bed and breakfast...",
+    amenities_title: "Amenities & Features",
+    pricing_title: "Pricing & Availability",
+    pricing_description: "Competitive rates with exceptional value",
+    contact_title: "Get In Touch",
+    contact_description: "Ready to book your stay?",
+    footer_text: "© 2025 Beautiful BnB. All rights reserved.",
+  },
+  fr: {
+    hero_title: "Bienvenue dans Notre Magnifique BnB",
+    hero_subtitle: "Découvrez le confort et le luxe",
+    hero_cta: "Réservez Votre Séjour",
+    about_title: "À Propos de Notre Propriété",
+    about_description: "Notre charmant bed and breakfast...",
+    amenities_title: "Équipements & Caractéristiques",
+    pricing_title: "Tarifs & Disponibilité",
+    pricing_description: "Tarifs compétitifs avec une valeur exceptionnelle",
+    contact_title: "Contactez-Nous",
+    contact_description: "Prêt à réserver votre séjour?",
+    footer_text: "© 2025 Magnifique BnB. Tous droits réservés.",
+  },
+  nl: {
+  // Get language from query param, default to 'en'
+    hero_title: "Welkom bij Onze Prachtige BnB",
+    hero_subtitle: "Ervaar comfort en luxe",
+    hero_cta: "Boek Uw Verblijf",
+    about_title: "Over Ons Pand",
+    about_description: "Onze charmante bed and breakfast...",
+    amenities_title: "Voorzieningen & Faciliteiten",
+    pricing_title: "Prijzen & Beschikbaarheid",
+    pricing_description: "Concurrerende tarieven met uitzonderlijke waarde",
+    contact_title: "Neem Contact Op",
+    contact_description: "Klaar om uw verblijf te boeken?",
+    footer_text: "© 2025 Prachtige BnB. Alle rechten voorbehouden.",
+  },
+}
+
+export default async function HomePage({ searchParams }: { searchParams?: { lang?: string } }) {
+  // Get language from query param, default to 'en'
+  const langParam = searchParams?.lang
+  const lang: Lang = (langParam === "en" || langParam === "fr" || langParam === "nl") ? langParam : "nl"
+  const content = await getContent(lang)
   const property = await getPropertyInfo()
+  const fallback = fallbackTexts[lang] || fallbackTexts.en
 
   if (!property) {
     return <div>Property information not found</div>
@@ -33,39 +96,39 @@ export default async function HomePage() {
       {/* Main Content */}
       <main>
         <HeroSection
-          title={content.hero_title || "Welkom bij Onze Prachtige BnB"}
-          subtitle={content.hero_subtitle || "Ervaar comfort en luxe"}
-          ctaText={content.hero_cta || "Boek Uw Verblijf"}
+          title={content.hero_title || fallback.hero_title}
+          subtitle={content.hero_subtitle || fallback.hero_subtitle}
+          ctaText={content.hero_cta || fallback.hero_cta}
           propertyImages={property.images}
         />
 
         <AboutSection
-          title={content.about_title || "Over Ons Pand"}
-          description={content.about_description || "Onze charmante bed and breakfast..."}
+          title={content.about_title || fallback.about_title}
+          description={content.about_description || fallback.about_description}
           property={property}
         />
 
         <AmenitiesSection
-          title={content.amenities_title || "Voorzieningen & Faciliteiten"}
+          title={content.amenities_title || fallback.amenities_title}
           amenities={property.amenities}
         />
 
         <PricingSection
-          title={content.pricing_title || "Prijzen & Beschikbaarheid"}
-          description={content.pricing_description || "Concurrerende tarieven met uitzonderlijke waarde"}
+          title={content.pricing_title || fallback.pricing_title}
+          description={content.pricing_description || fallback.pricing_description}
           property={property}
         />
 
         <ContactSection
-          title={content.contact_title || "Neem Contact Op"}
-          description={content.contact_description || "Klaar om uw verblijf te boeken?"}
+          title={content.contact_title || fallback.contact_title}
+          description={content.contact_description || fallback.contact_description}
         />
       </main>
 
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-8 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <p>{content.footer_text || "© 2025 Beautiful BnB. Alle rechten voorbehouden."}</p>
+          <p>{content.footer_text || fallback.footer_text}</p>
         </div>
       </footer>
     </div>

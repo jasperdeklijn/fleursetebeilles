@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Globe } from "lucide-react"
 
@@ -12,16 +12,18 @@ const languages = [
 
 export function LanguageSelector() {
   const router = useRouter()
-  const pathname = usePathname()
-
-  const currentLang = pathname === "/" ? "nl" : pathname.split("/")[1] || "nl"
+  const searchParams = useSearchParams()
+  const currentLang = searchParams.get("lang") || "nl"
 
   const handleLanguageChange = (langCode: string) => {
+    const params = new URLSearchParams(Array.from(searchParams.entries()))
     if (langCode === "nl") {
-      router.push("/")
+      params.delete("lang")
     } else {
-      router.push(`/${langCode}`)
+      params.set("lang", langCode)
     }
+    const query = params.toString()
+    router.push(query ? `/?${query}` : "/")
   }
 
   return (

@@ -38,27 +38,6 @@ export default function Page() {
     }
   }
 
-  const handleCreateDefaultUser = async () => {
-    const supabase = createClient()
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      const { error } = await supabase.auth.signUp({
-        email: "",
-        password: "",
-        options: {
-          emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/admin`,
-        },
-      })
-      if (error) throw error
-      setError("Default admin user created! You can now login.")
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
@@ -96,15 +75,6 @@ export default function Page() {
                   {error && <p className="text-sm text-red-500">{error}</p>}
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading ? "Logging in..." : "Login"}
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full bg-transparent"
-                    disabled={isLoading}
-                    onClick={handleCreateDefaultUser}
-                  >
-                    Create Default Admin User
                   </Button>
                 </div>
                 <div className="mt-4 text-center text-sm">

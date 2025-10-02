@@ -27,8 +27,8 @@ interface ContentTranslation {
 
 const languages = [
   { code: "nl", name: "Nederlands", flag: "🇳🇱" },
-  { code: "en", name: "English", flag: "🇬🇧" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
+  { code: "en", name: "Engels", flag: "🇬🇧" },
+  { code: "fr", name: "Frans", flag: "🇫🇷" },
 ]
 
 export function ContentEditor() {
@@ -81,10 +81,10 @@ export function ContentEditor() {
 
       setTranslations(translationsByLanguage)
     } catch (error) {
-      console.error("Error loading content:", error)
+      console.error("Fout bij het laden van de inhoud:", error)
       toast({
-        title: "Error",
-        description: "Failed to load content. Please try again.",
+        title: "Fout",
+        description: "Kon de inhoud niet laden. Probeer het opnieuw.",
         variant: "destructive",
       })
     } finally {
@@ -142,16 +142,16 @@ export function ContentEditor() {
       }
 
       toast({
-        title: "Success",
-        description: "Content updated successfully!",
+        title: "Succes",
+        description: "Inhoud succesvol bijgewerkt!",
       })
 
       await loadContent()
     } catch (error) {
-      console.error("Error saving content:", error)
+      console.error("Fout bij het opslaan van de inhoud:", error)
       toast({
-        title: "Error",
-        description: "Failed to save content. Please try again.",
+        title: "Fout",
+        description: "Kon de inhoud niet opslaan. Probeer het opnieuw.",
         variant: "destructive",
       })
     } finally {
@@ -169,7 +169,7 @@ export function ContentEditor() {
     return (
       <div className="flex items-center justify-center py-8">
         <Loader2 className="h-6 w-6 animate-spin" />
-        <span className="ml-2">Loading content...</span>
+        <span className="ml-2">Inhoud laden...</span>
       </div>
     )
   }
@@ -181,12 +181,12 @@ export function ContentEditor() {
           <Card key={section.id}>
             <CardHeader>
               <CardTitle className="text-lg">{section.section_name}</CardTitle>
-              <p className="text-sm text-muted-foreground">Key: {section.section_key}</p>
+              <p className="text-sm text-muted-foreground">Sleutel: {section.section_key}</p>
             </CardHeader>
             <CardContent>
               {section.content_type === "rich_text" ? (
                 <div>
-                  <Label htmlFor={`${section.id}-${langCode}`}>Content</Label>
+                  <Label htmlFor={`${section.id}-${langCode}`}>Inhoud</Label>
                   <Textarea
                     id={`${section.id}-${langCode}`}
                     value={getTranslationContent(section.id, langCode)}
@@ -197,7 +197,7 @@ export function ContentEditor() {
                 </div>
               ) : (
                 <div>
-                  <Label htmlFor={`${section.id}-${langCode}`}>Content</Label>
+                  <Label htmlFor={`${section.id}-${langCode}`}>Inhoud</Label>
                   <Input
                     id={`${section.id}-${langCode}`}
                     value={getTranslationContent(section.id, langCode)}
@@ -219,14 +219,14 @@ export function ContentEditor() {
         <div className="flex items-center gap-2">
           <Languages className="h-5 w-5" />
           <div>
-            <h3 className="text-lg font-semibold">Multi-Language Content</h3>
-            <p className="text-sm text-muted-foreground">Edit content for all languages</p>
+            <h3 className="text-lg font-semibold">Meertalige Inhoud</h3>
+            <p className="text-sm text-muted-foreground">Bewerk de inhoud voor alle talen</p>
           </div>
         </div>
 
         <Button onClick={saveContent} disabled={isSaving}>
           {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-          {isSaving ? "Saving..." : "Save Changes"}
+          {isSaving ? "Bezig met opslaan..." : "Wijzigingen opslaan"}
         </Button>
       </div>
 
