@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { LanguageSelector } from "@/components/language-selector"
-import { Menu, X } from "lucide-react" // icons for open/close
+import { Menu, X } from "lucide-react"
 
 const navSections = [
   { id: "hero", label: { en: "Home", fr: "Accueil", nl: "Home" } },
@@ -19,21 +19,30 @@ function scrollToSection(id: string) {
 
 export default function ClientNav({ propertyName, lang }: { propertyName: string, lang: "en" | "fr" | "nl" }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    document.documentElement.style.scrollBehavior = "smooth"
-    return () => {
-      document.documentElement.style.scrollBehavior = ""
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
     }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const handleNavClick = (id: string) => {
     scrollToSection(id)
-    setMenuOpen(false) // close menu on click
+    setMenuOpen(false)
   }
 
   return (
-    <header className="absolute top-0 left-0 right-0 z-20 p-4 bg-transparent">
+    <header
+    className={`fixed top-0 left-0 w-full z-50  p-4 transition-all duration-300 ${
+        scrolled
+          ? "bg-black/80 backdrop-blur-md shadow-md"
+          : "bg-transparent"
+      }`}
+      style={{ WebkitBackdropFilter: scrolled ? "blur(8px)" : "none" }}
+    >
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <div className="text-white font-bold text-xl">{propertyName}</div>
 
@@ -54,8 +63,6 @@ export default function ClientNav({ propertyName, lang }: { propertyName: string
 
         <div className="flex items-center gap-4">
           <LanguageSelector />
-
-          {/* Mobile toggle button */}
           <button
             type="button"
             className="text-white md:hidden p-2 rounded hover:bg-white/20 transition"
