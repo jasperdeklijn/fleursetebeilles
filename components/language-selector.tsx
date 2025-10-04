@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect, useRef } from "react"
 import { Globe } from "lucide-react"
 
 const languages = [
@@ -14,6 +14,8 @@ export function LanguageSelector() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const currentLang = searchParams.get("lang") || "nl"
+  const [open, setOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const handleLanguageChange = (langCode: string) => {
     const params = new URLSearchParams(Array.from(searchParams.entries()))
@@ -24,27 +26,46 @@ export function LanguageSelector() {
     }
     const query = params.toString()
     router.push(query ? `/?${query}` : "/")
+    setOpen(false)
   }
 
+  // close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
   return (
-    <div className="flex items-center gap-2">
-      <Globe className="w-4 h-4 text-white" />
-      <div className="flex gap-1">
-        {languages.map((lang) => (
-          <Button
-            key={lang.code}
-            variant="ghost"
-            size="sm"
-            onClick={() => handleLanguageChange(lang.code)}
-            className={`text-white hover:bg-white/20 ${
-              currentLang === lang.code ? "bg-white/20 font-bold" : ""
-            }`}
-          >
-            <span className="mr-1">{lang.flag}</span>
-            {lang.code.toUpperCase()}
-          </Button>
-        ))}
-      </div>
+    <div className="relative" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="flex items-center justify-center text-white p-2 rounded hover:bg-white/20 transition"
+      >
+        <Globe className="w-5 h-5" />
+      </button>
+
+      {open && (
+        <div className="absolute right-0 mt-2 w-32 bg-black/80 backdrop-blur-md text-white rounded-lg shadow-lg overflow-hidden z-50">
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => handleLanguageChange(lang.code)}
+              className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-white/20 transition ${
+                currentLang === lang.code ? "bg-white/20 font-bold" : ""
+              }`}
+            >
+              <span>{lang.flag}</span>
+              <span>{lang.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
