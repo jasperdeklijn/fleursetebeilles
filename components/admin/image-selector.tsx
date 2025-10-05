@@ -25,7 +25,7 @@ interface ImageSelectorProps {
   title?: string
 }
 
-export function ImageSelector({ selectedImages, onImagesChange, maxImages, title = "Select Images" }: ImageSelectorProps) {
+export function ImageSelector({ selectedImages, onImagesChange, maxImages, title = "Selectee afbeelingen" }: ImageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleImage = (image: string) => {
@@ -49,7 +49,7 @@ export function ImageSelector({ selectedImages, onImagesChange, maxImages, title
         <div className="flex items-center justify-between mb-2">
           <label className="text-sm font-medium">{title}</label>
           <Button variant="outline" size="sm" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? "Hide Gallery" : "Show Gallery"}
+            {isOpen ? "Sluit gallerij" : "Toon gallerij"}
           </Button>
         </div>
 
@@ -73,13 +73,18 @@ export function ImageSelector({ selectedImages, onImagesChange, maxImages, title
         )}
 
         {selectedImages.length === 0 && (
-          <p className="text-sm text-muted-foreground mb-4">No images selected. Click "Show Gallery" to select images.</p>
+          <p className="text-sm text-muted-foreground mb-4">Geen afbeeldingen geselecteerd. Klik "Gallerij" om afbeeldingen te kiezen.</p>
         )}
       </div>
 
       {isOpen && (
         <Card>
           <CardContent className="pt-6">
+            {maxImages && (
+              <p className="text-sm text-muted-foreground mt-4">
+                {selectedImages.length} van de maximaal {maxImages} afbeeldingen geselecteerd.
+              </p>
+            )}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {AVAILABLE_IMAGES.map((image) => {
                 const isSelected = selectedImages.includes(image)
@@ -106,11 +111,7 @@ export function ImageSelector({ selectedImages, onImagesChange, maxImages, title
                 )
               })}
             </div>
-            {maxImages && (
-              <p className="text-sm text-muted-foreground mt-4">
-                Selected {selectedImages.length} of {maxImages} images
-              </p>
-            )}
+          
           </CardContent>
         </Card>
       )}

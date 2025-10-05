@@ -200,7 +200,7 @@ export function RoomsEditor() {
     return (
       <div className="flex items-center justify-center py-8">
         <Loader2 className="h-6 w-6 animate-spin" />
-        <span className="ml-2">Loading rooms...</span>
+        <span className="ml-2">Kamers laden...</span>
       </div>
     )
   }
@@ -209,41 +209,41 @@ export function RoomsEditor() {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">{isCreating ? "Create New Room" : "Edit Room"}</h3>
+          <h3 className="text-lg font-semibold">{isCreating ? "Nieuwe kamer aanmaken" : "Kamer wijzigen"}</h3>
           <div className="flex gap-2">
             <Button onClick={saveRoom} disabled={isSaving}>
               {isSaving ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-              {isSaving ? "Saving..." : "Save"}
+              {isSaving ? "Opslaan..." : "Opslaan"}
             </Button>
             <Button variant="outline" onClick={cancelEditing}>
-              Cancel
+              Annuleren
             </Button>
           </div>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
+            <CardTitle>Basis informatie</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
-              <Label htmlFor="name">Room Name</Label>
+              <Label htmlFor="name">Kamer naam</Label>
               <Input
                 id="name"
                 value={editingRoom.name || ""}
                 onChange={(e) => updateField("name", e.target.value)}
-                placeholder="e.g., Deluxe Suite"
+                placeholder="o.a, Luxe Suite"
                 className="mt-1"
               />
             </div>
 
             <div>
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">Omschrijving</Label>
               <Textarea
                 id="description"
                 value={editingRoom.description || ""}
                 onChange={(e) => updateField("description", e.target.value)}
-                placeholder="Describe the room..."
+                placeholder="Omgschrijf de kamer..."
                 rows={3}
                 className="mt-1"
               />
@@ -251,7 +251,7 @@ export function RoomsEditor() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <Label htmlFor="maxGuests">Max Guests</Label>
+                <Label htmlFor="maxGuests">Maximale Gasten</Label>
                 <Input
                   id="maxGuests"
                   type="number"
@@ -273,7 +273,7 @@ export function RoomsEditor() {
               </div>
 
               <div>
-                <Label htmlFor="sizeSqm">Size (m²)</Label>
+                <Label htmlFor="sizeSqm">Oppervlakte (m²)</Label>
                 <Input
                   id="sizeSqm"
                   type="number"
@@ -285,7 +285,7 @@ export function RoomsEditor() {
               </div>
 
               <div>
-                <Label htmlFor="price">Price per Night (€)</Label>
+                <Label htmlFor="price">Prijs per nacht (€)</Label>
                 <Input
                   id="price"
                   type="number"
@@ -305,14 +305,14 @@ export function RoomsEditor() {
                 onChange={(e) => updateField("is_available", e.target.checked)}
                 className="h-4 w-4"
               />
-              <Label htmlFor="isAvailable">Room is available</Label>
+              <Label htmlFor="isAvailable">Kamer is beschikbaar</Label>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Amenities</CardTitle>
+            <CardTitle>Voorzieningen & Faciliteiten</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-wrap gap-2">
@@ -333,7 +333,7 @@ export function RoomsEditor() {
 
             <div className="flex gap-2">
               <Input
-                placeholder="Add amenity"
+                placeholder="Voeg een voorziening toe"
                 value={newAmenity}
                 onChange={(e) => setNewAmenity(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && addAmenity()}
@@ -347,13 +347,14 @@ export function RoomsEditor() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Images</CardTitle>
+            <CardTitle>Afbeeldingen</CardTitle>
           </CardHeader>
           <CardContent>
             <ImageSelector
               selectedImages={editingRoom.images || []}
               onImagesChange={(images) => updateField("images", images)}
-              title="Room Images"
+              title="Kamer afbeeldingen"
+              maxImages={4}
             />
           </CardContent>
         </Card>
@@ -365,21 +366,21 @@ export function RoomsEditor() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <p className="text-sm text-muted-foreground">
-          {rooms.length} {rooms.length === 1 ? "room" : "rooms"} total
+          {rooms.length} {rooms.length === 1 ? "kamer" : "kamers"} totaal
         </p>
         <Button onClick={startCreating}>
           <Plus className="h-4 w-4 mr-2" />
-          Create Room
+          Kamer toevoegen
         </Button>
       </div>
 
       {rooms.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <p className="text-muted-foreground mb-4">No rooms yet. Create your first room to get started.</p>
+            <p className="text-muted-foreground mb-4">Er bestaan nog geen kamers</p>
             <Button onClick={startCreating}>
               <Plus className="h-4 w-4 mr-2" />
-              Create Room
+              Kamer toevoegen
             </Button>
           </CardContent>
         </Card>
@@ -397,16 +398,16 @@ export function RoomsEditor() {
                     <p className="text-sm text-muted-foreground mb-3">{room.description}</p>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm mb-3">
                       <div>
-                        <span className="font-medium">Max Guests:</span> {room.max_guests}
+                        <span className="font-medium">Maximale Gasten:</span> {room.max_guests}
                       </div>
                       <div>
                         <span className="font-medium">Bed:</span> {room.bed_type}
                       </div>
                       <div>
-                        <span className="font-medium">Size:</span> {room.size_sqm} m²
+                        <span className="font-medium">Grootte Kamer:</span> {room.size_sqm} m²
                       </div>
                       <div>
-                        <span className="font-medium">Price:</span> €{room.price_per_night}/night
+                        <span className="font-medium">Prijs:</span> €{room.price_per_night}/per nacht
                       </div>
                     </div>
                     {room.amenities && room.amenities.length > 0 && (
@@ -440,11 +441,11 @@ export function RoomsEditor() {
                     </div>
                     <Button variant="outline" size="sm" onClick={() => startEditing(room)}>
                       <Pencil className="h-4 w-4 mr-2" />
-                      Edit
+                      Wijzigen
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => deleteRoom(room.id)}>
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
+                      Verwijderen
                     </Button>
                   </div>
                 </div>
