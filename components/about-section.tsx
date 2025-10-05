@@ -1,15 +1,14 @@
 import { Card } from "@/components/ui/card"
 import { MapPin, Users, Bed, Bath } from "lucide-react"
 import Image from "next/image"
-import type { PropertyInfo } from "@/lib/content"
+import type { Room } from "@/lib/types/room"
 
 interface AboutSectionProps {
   title: string
   description: string
-  property: PropertyInfo
 }
 
-export function AboutSection({ title, description, property }: AboutSectionProps) {
+export function AboutSection({ title, description }: AboutSectionProps) {
   return (
     <section className="py-16 px-4">
       <div className="max-w-6xl mx-auto">

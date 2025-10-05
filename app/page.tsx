@@ -1,12 +1,11 @@
 // app/page.tsx (Server Component - async allowed)
 import { getContent } from "@/lib/services/contentService"
-import { getRoomInfo } from "@/lib/services/roomService"
+import { getAllRooms } from "@/lib/services/roomService"
 import { HeroSection } from "@/components/hero-section"
 import { AboutSection } from "@/components/about-section"
 import { AmenitiesSection } from "@/components/amenities-section"
 import { PricingSection } from "@/components/pricing-section"
 import { ContactSection } from "@/components/contact-section"
-import { LanguageSelector } from "@/components/language-selector"
 import ClientNav from "@/components/client-nav"
 
 export const dynamic = 'force-dynamic'
@@ -75,7 +74,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
   const lang: Lang = (langParam === "en" || langParam === "fr" || langParam === "nl") ? langParam : "nl"
 
   const content = await getContent(lang)
-  const room = await getRoomInfo()
+  const room = await getAllRooms()
   const fallback = fallbackTexts[lang] || fallbackTexts.en
 
   if (!room) {
@@ -85,7 +84,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
   return (
     <div className="min-h-screen">
       {/* Header (client-side nav + smooth scrolling) */}
-      <ClientNav propertyName={room.name} lang={lang} />
+      <ClientNav lang={lang} />
 
       <main>
         <section id="hero">
@@ -93,22 +92,21 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
             title={content.hero_title || fallback.hero_title}
             subtitle={content.hero_subtitle || fallback.hero_subtitle}
             ctaText={content.hero_cta || fallback.hero_cta}
-            propertyImages={room.images}
+            propertyImages={room[0].images}
           />
         </section>
 
-        <section id="about">
+        {/* <section id="about">
           <AboutSection
             title={content.about_title || fallback.about_title}
             description={content.about_description || fallback.about_description}
-            property={room}
           />
-        </section>
+        </section> */}
 
         <section id="amenities">
           <AmenitiesSection
             title={content.amenities_title || fallback.amenities_title}
-            amenities={room.amenities}
+            amenities={room[0].amenities}
           />
         </section>
 
@@ -116,7 +114,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
           <PricingSection
             title={content.pricing_title || fallback.pricing_title}
             description={content.pricing_description || fallback.pricing_description}
-            property={room}
+            rooms={room}
           />
         </section>
 

@@ -17,7 +17,7 @@ function scrollToSection(id: string) {
   if (el) el.scrollIntoView({ behavior: "smooth" })
 }
 
-export default function ClientNav({ propertyName, lang }: { propertyName: string, lang: "en" | "fr" | "nl" }) {
+export default function ClientNav({ lang }: { lang: "en" | "fr" | "nl" }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -44,7 +44,7 @@ export default function ClientNav({ propertyName, lang }: { propertyName: string
       style={{ WebkitBackdropFilter: scrolled ? "blur(8px)" : "none" }}
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <div className="text-white font-bold text-xl">{propertyName}</div>
+        <div className="text-white font-bold text-xl">{"Fleuretebeilles"}</div>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex gap-2">

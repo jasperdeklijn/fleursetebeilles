@@ -19,3 +19,19 @@ export async function getRoomInfo(): Promise<Room> {
     return fallbackRoom
   }
 }
+export async function getAllRooms(): Promise<Room[]> {
+  try {
+    const supabase = await createClient()
+    
+    const { data: rooms, error } = await supabase
+      .from("rooms")
+      .select("*")
+      .order("id", { ascending: true }) // Ensure consistent order
+      
+    if (error) throw error
+    return rooms || [fallbackRoom]
+  } catch (error) {
+    console.error("Error in getAllRooms:", error)
+    return [fallbackRoom]
+  }
+}
