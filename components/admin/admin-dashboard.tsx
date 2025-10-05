@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ContentEditor } from "./content-editor"
-import { PropertyEditor } from "./property-editor"
 import { RoomsEditor } from "./rooms-editor"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
@@ -49,14 +48,10 @@ export function AdminDashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         <Tabs defaultValue="content" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 max-w-2xl">
+          <TabsList className="grid w-full grid-cols-2 max-w-2xl">
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Inhoud
-            </TabsTrigger>
-            <TabsTrigger value="property" className="flex items-center gap-2">
-              <Building className="h-4 w-4" />
-              Eigendom
             </TabsTrigger>
             <TabsTrigger value="rooms" className="flex items-center gap-2">
               <DoorOpen className="h-4 w-4" />
@@ -72,18 +67,6 @@ export function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <ContentEditor />
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="property">
-            <Card>
-              <CardHeader>
-                <CardTitle>Eigendom informatie</CardTitle>
-                <p className="text-muted-foreground">Werk uw eigendomsgegevens, prijzen en voorzieningen bij.</p>
-              </CardHeader>
-              <CardContent>
-                <PropertyEditor />
               </CardContent>
             </Card>
           </TabsContent>
