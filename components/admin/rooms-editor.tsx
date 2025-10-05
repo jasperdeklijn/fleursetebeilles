@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
-import { Loader2, Plus, Pencil, Trash2, X, Save, ArrowUp, ArrowDown } from "lucide-react"
+import { Loader as Loader2, Plus, Pencil, Trash2, X, Save, ArrowUp, ArrowDown } from "lucide-react"
 import type { Room } from "@/lib/types"
 
 export function RoomsEditor() {
