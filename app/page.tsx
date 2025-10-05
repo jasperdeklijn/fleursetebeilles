@@ -1,5 +1,6 @@
 // app/page.tsx (Server Component - async allowed)
-import { getContent, getPropertyInfo } from "@/lib/content"
+import { getContent } from "@/lib/services/contentService"
+import { getRoomInfo } from "@/lib/services/roomService"
 import { HeroSection } from "@/components/hero-section"
 import { AboutSection } from "@/components/about-section"
 import { AmenitiesSection } from "@/components/amenities-section"
@@ -74,17 +75,17 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
   const lang: Lang = (langParam === "en" || langParam === "fr" || langParam === "nl") ? langParam : "nl"
 
   const content = await getContent(lang)
-  const property = await getPropertyInfo()
+  const room = await getRoomInfo()
   const fallback = fallbackTexts[lang] || fallbackTexts.en
 
-  if (!property) {
+  if (!room) {
     return <div>Property information not found</div>
   }
 
   return (
     <div className="min-h-screen">
       {/* Header (client-side nav + smooth scrolling) */}
-      <ClientNav propertyName={property.name} lang={lang} />
+      <ClientNav propertyName={room.name} lang={lang} />
 
       <main>
         <section id="hero">
@@ -92,7 +93,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
             title={content.hero_title || fallback.hero_title}
             subtitle={content.hero_subtitle || fallback.hero_subtitle}
             ctaText={content.hero_cta || fallback.hero_cta}
-            propertyImages={property.images}
+            propertyImages={room.images}
           />
         </section>
 
@@ -100,14 +101,14 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
           <AboutSection
             title={content.about_title || fallback.about_title}
             description={content.about_description || fallback.about_description}
-            property={property}
+            property={room}
           />
         </section>
 
         <section id="amenities">
           <AmenitiesSection
             title={content.amenities_title || fallback.amenities_title}
-            amenities={property.amenities}
+            amenities={room.amenities}
           />
         </section>
 
@@ -115,7 +116,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
           <PricingSection
             title={content.pricing_title || fallback.pricing_title}
             description={content.pricing_description || fallback.pricing_description}
-            property={property}
+            property={room}
           />
         </section>
 
