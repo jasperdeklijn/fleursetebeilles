@@ -9,8 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/client"
 import { useToast } from "@/hooks/use-toast"
-import { Loader as Loader2, Plus, Pencil, Trash2, X, Save, ArrowUp, ArrowDown } from "lucide-react"
+import { Loader2, Plus, Pencil, Trash2, X, Save, ArrowUp, ArrowDown } from "lucide-react"
 import type { Room } from "@/lib/types"
+import { ImageSelector } from "./image-selector"
 
 export function RoomsEditor() {
   const [rooms, setRooms] = useState<Room[]>([])
@@ -19,7 +20,6 @@ export function RoomsEditor() {
   const [isCreating, setIsCreating] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [newAmenity, setNewAmenity] = useState("")
-  const [newImage, setNewImage] = useState("")
   const { toast } = useToast()
 
   useEffect(() => {
@@ -75,7 +75,6 @@ export function RoomsEditor() {
     setEditingRoom(null)
     setIsCreating(false)
     setNewAmenity("")
-    setNewImage("")
   }
 
   const saveRoom = async () => {
@@ -194,22 +193,6 @@ export function RoomsEditor() {
     updateField(
       "amenities",
       amenities.filter((_, i) => i !== index)
-    )
-  }
-
-  const addImage = () => {
-    if (!editingRoom || !newImage.trim()) return
-    const images = editingRoom.images || []
-    updateField("images", [...images, newImage.trim()])
-    setNewImage("")
-  }
-
-  const removeImage = (index: number) => {
-    if (!editingRoom) return
-    const images = editingRoom.images || []
-    updateField(
-      "images",
-      images.filter((_, i) => i !== index)
     )
   }
 
@@ -366,34 +349,12 @@ export function RoomsEditor() {
           <CardHeader>
             <CardTitle>Images</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              {(editingRoom.images || []).map((image, index) => (
-                <div key={index} className="flex items-center gap-2 p-2 border rounded">
-                  <span className="flex-1 text-sm font-mono truncate">{image}</span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 hover:bg-destructive hover:text-destructive-foreground"
-                    onClick={() => removeImage(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-2">
-              <Input
-                placeholder="Add image URL"
-                value={newImage}
-                onChange={(e) => setNewImage(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && addImage()}
-              />
-              <Button onClick={addImage} disabled={!newImage.trim()}>
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
+          <CardContent>
+            <ImageSelector
+              selectedImages={editingRoom.images || []}
+              onImagesChange={(images) => updateField("images", images)}
+              title="Room Images"
+            />
           </CardContent>
         </Card>
       </div>
