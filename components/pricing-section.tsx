@@ -21,24 +21,30 @@ interface PricingSectionProps {
 
 export function PricingSection({ title, description, rooms }: PricingSectionProps) {
   return (
-    <section className="py-16 px-4">
+    <section className="py-12 sm:py-16 px-2 sm:px-4">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">{title}</h2>
-          <p className="text-lg text-muted-foreground text-pretty">{description}</p>
+        <div className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">{title}</h2>
+          <p className="text-base sm:text-lg text-muted-foreground">{description}</p>
         </div>
 
-        <Carousel className="max-w-3xl mx-auto">
-          <CarouselContent>
+        <Carousel
+          className="max-w-full sm:max-w-3xl mx-auto"
+          opts={{ align: "center", loop: true }}
+        >
+          <CarouselContent className="-ml-2 sm:-ml-4">
             {rooms.map((room) => (
-              <CarouselItem key={room.id} className="p-4">
-                <Card>
+              <CarouselItem
+                key={room.id}
+                className="basis-full sm:basis-1/2 md:basis-1/3 pl-2 sm:pl-4"
+              >
+                <Card className="h-full">
                   <CardHeader className="text-center">
-                    <CardTitle className="text-2xl">{room.name}</CardTitle>
-                    <div className="flex items-center justify-center gap-2 text-3xl font-bold text-primary">
-                      <Euro className="h-8 w-8" />
+                    <CardTitle className="text-xl sm:text-2xl">{room.name}</CardTitle>
+                    <div className="flex items-center justify-center gap-2 text-2xl sm:text-3xl font-bold text-primary">
+                      <Euro className="h-6 w-6 sm:h-8 sm:w-8" />
                       {room.price_per_night}
-                      <span className="text-lg text-muted-foreground font-normal">/ nacht</span>
+                      <span className="text-sm sm:text-lg text-muted-foreground font-normal">/ nacht</span>
                     </div>
                   </CardHeader>
 
@@ -59,7 +65,7 @@ export function PricingSection({ title, description, rooms }: PricingSectionProp
                       <Badge variant="secondary">2 nachten</Badge>
                     </div>
 
-                    <div className="pt-4">
+                    <div className="pt-2 sm:pt-4">
                       <Button className="w-full" size="lg">
                         Beschikbaarheid Controleren
                       </Button>
@@ -74,8 +80,8 @@ export function PricingSection({ title, description, rooms }: PricingSectionProp
             ))}
           </CarouselContent>
 
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="left-2 sm:-left-10" />
+          <CarouselNext className="right-2 sm:-right-10" />
         </Carousel>
       </div>
     </section>
