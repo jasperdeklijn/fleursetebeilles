@@ -1,72 +1,91 @@
-import { Card } from "@/components/ui/card"
-import { MapPin, Users, Bed, Bath } from "lucide-react"
+"use client"
+
+import { useState } from "react"
 import Image from "next/image"
-import type { Room } from "@/lib/types/room"
+import { motion } from "framer-motion"
 
 interface AboutSectionProps {
   title: string
   description: string
 }
 
+const images = [
+  { src: "/about1.jpg", caption: "Our cozy rooms" },
+  { src: "/about2.jpg", caption: "Relaxing nature" },
+  { src: "/about3.jpg", caption: "Local experiences" },
+  { src: "/about4.jpeg", caption: "Delicious meals" },
+  { src: "/about5.jpg", caption: "Peaceful mornings" },
+]
+
 export function AboutSection({ title, description }: AboutSectionProps) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(0)
+  const toggle = (index: number) => {
+    setActiveIndex(activeIndex === index ? null : index)
+  }
+
   return (
-    <section className="py-16 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">{title}</h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-pretty">{description}</p>
+    <section className="relative py-24 px-4 bg-background overflow-hidden">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        {/* LEFT: Text */}
+        <div className="space-y-6 text-center md:text-left sticky top-24 self-start">
+          <h2 className="text-3xl md:text-5xl font-bold text-balance">{title}</h2>
+          <p className="text-lg text-muted-foreground leading-relaxed">{description}</p>
+
+          <div className="space-y-4 text-muted-foreground">
+            <p>
+              We offer a peaceful retreat surrounded by nature — ideal for relaxation,
+              adventure, or quiet reflection. Every room is designed to make you feel at home.
+            </p>
+            <p>
+              Our team ensures that each guest has a memorable stay, whether you’re
+              here for a weekend escape or a longer visit.
+            </p>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 items-center">
-          <div className="grid grid-cols-2 gap-4">
-            {property.images.slice(0, 4).map((image, index) => (
-              <Card key={index} className="overflow-hidden aspect-square">
-                <Image
-                  src={
-                    image ||
-                    `/placeholder.svg?height=300&width=300&query=dutch nature interior cozy green plants natural light room ${index + 1}`
-                  }
-                  alt={`Interieur ${index + 1}`}
-                  width={300}
-                  height={300}
-                  className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                />
-              </Card>
-            ))}
-          </div>
+        {/* RIGHT: Vertical Accordion */}
+        <div className="flex flex-col space-y-4">
+          {images.map((image, index) => {
+            const isActive = activeIndex === index
+            return (
+              <motion.div
+                key={index}
+                layout
+                transition={{ type: "spring", stiffness: 150, damping: 25 }}
+                className={`relative overflow-hidden rounded-2xl shadow-xl cursor-pointer ${
+                  isActive ? "h-[400px]" : "h-[120px]"
+                }`}
+                onClick={() => toggle(index)}
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src={image.src}
+                    alt={image.caption}
+                    fill
+                    className={`object-cover transition-all duration-500 ${
+                      isActive ? "brightness-100 scale-105" : "brightness-50"
+                    }`}
+                    priority={index === 0}
+                  />
+                </div>
 
-          {/* Property Details */}
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-2xl font-semibold mb-2">{property.name}</h3>
-              <div className="flex items-center gap-2 text-muted-foreground mb-4">
-                <MapPin className="h-4 w-4" />
-                <span>{property.address}</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              <Card className="p-4 text-center">
-                <Users className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <div className="text-2xl font-bold">{property.max_guests}</div>
-                <div className="text-sm text-muted-foreground">Gasten</div>
-              </Card>
-              <Card className="p-4 text-center">
-                <Bed className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <div className="text-2xl font-bold">{property.bedrooms}</div>
-                <div className="text-sm text-muted-foreground">Slaapkamers</div>
-              </Card>
-              <Card className="p-4 text-center">
-                <Bath className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <div className="text-2xl font-bold">{property.bathrooms}</div>
-                <div className="text-sm text-muted-foreground">Badkamers</div>
-              </Card>
-            </div>
-
-            <div>
-              <p className="text-muted-foreground mb-4">{property.description}</p>
-            </div>
-          </div>
+                {/* Caption */}
+                <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-black/70 via-transparent to-transparent">
+                  <motion.p
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: isActive ? 1 : 0,
+                      y: isActive ? 0 : 20,
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="text-white text-lg md:text-xl font-medium mb-4 text-center px-4"
+                  >
+                    {image.caption}
+                  </motion.p>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>

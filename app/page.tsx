@@ -1,4 +1,3 @@
-// app/page.tsx (Server Component - async allowed)
 import { getContent } from "@/lib/services/contentService"
 import { getAllRooms } from "@/lib/services/roomService"
 import { HeroSection } from "@/components/hero-section"
@@ -92,16 +91,15 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
             title={content.hero_title || fallback.hero_title}
             subtitle={content.hero_subtitle || fallback.hero_subtitle}
             ctaText={content.hero_cta || fallback.hero_cta}
-            propertyImages={room[0].images}
           />
         </section>
 
-        {/* <section id="about">
+        <section id="about">
           <AboutSection
             title={content.about_title || fallback.about_title}
             description={content.about_description || fallback.about_description}
           />
-        </section> */}
+        </section>
 
         <section id="amenities">
           <AmenitiesSection

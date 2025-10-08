@@ -44,7 +44,7 @@ export default function ClientNav({ lang }: { lang: "en" | "fr" | "nl" }) {
       style={{ WebkitBackdropFilter: scrolled ? "blur(8px)" : "none" }}
     >
       <div className="max-w-6xl mx-auto flex justify-between items-center">
-        <div className="text-white font-bold text-xl">{"Fleuretebeilles"}</div>
+        <div className="text-white font-bold text-xl">{"Fleursetabeilles"}</div>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex gap-2">
