@@ -2,7 +2,7 @@ import { getContent } from "@/lib/services/contentService"
 import { getAllRooms } from "@/lib/services/roomService"
 import { HeroSection } from "@/components/hero-section"
 import { AboutSection } from "@/components/about-section"
-import { AmenitiesSection } from "@/components/amenities-section"
+import { RoomsSection } from "@/components/rooms-section"
 import { PricingSection } from "@/components/pricing-section"
 import { ContactSection } from "@/components/contact-section"
 import ClientNav from "@/components/client-nav"
@@ -101,11 +101,8 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
           />
         </section>
 
-        <section id="amenities">
-          <AmenitiesSection
-            title={content.amenities_title || fallback.amenities_title}
-            amenities={room[0].amenities}
-          />
+        <section id="rooms"> 
+          <RoomsSection rooms={room} lang={lang} />
         </section>
 
         <section id="pricing">
