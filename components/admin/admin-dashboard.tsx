@@ -8,7 +8,7 @@ import { ContentEditor } from "./content-editor"
 import { RoomsEditor } from "./rooms-editor"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
-import { LogOut, Chrome as Home, FileText, Building, DoorOpen } from "lucide-react"
+import { LogOut,  Home, FileText, Building, DoorOpen } from "lucide-react"
 import Link from "next/link"
 
 export function AdminDashboard() {
