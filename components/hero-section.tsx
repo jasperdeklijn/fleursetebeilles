@@ -29,7 +29,7 @@ export function HeroSection({ title, subtitle, ctaText }: HeroSectionProps) {
 
   return (
     // This section takes 200% height so you can scroll through it
-    <section className="relative h-[200vh]">
+    <section className="relative h-[130vh] mb-[-10vh]">
       {/* Sticky hero wrapper */}
       <div className="sticky top-0 h-screen overflow-hidden">
         {/* Animated background */}

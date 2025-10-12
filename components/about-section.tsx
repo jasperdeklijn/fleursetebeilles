@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 
@@ -18,14 +18,56 @@ const images = [
 ]
 
 export function AboutSection({ title, description }: AboutSectionProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
   const [activeIndex, setActiveIndex] = useState<number | null>(0)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Detect mobile
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  // Scroll-based activation (for mobile)
+  useEffect(() => {
+    if (!isMobile) return
+
+    const handleScroll = () => {
+      if (!containerRef.current) return
+      const items = containerRef.current.querySelectorAll(".about-image-item")
+
+      let closestIndex = 0
+      let closestDistance = Infinity
+      const triggerPoint = window.innerHeight * 0.35 // ~top 1/3 of screen
+
+      items.forEach((item, index) => {
+        const rect = item.getBoundingClientRect()
+        const distance = Math.abs(rect.top - triggerPoint)
+        if (distance < closestDistance) {
+          closestDistance = distance
+          closestIndex = index
+        }
+      })
+
+      setActiveIndex(closestIndex)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    handleScroll() // trigger once on load
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [isMobile])
+
   const toggle = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index)
+    if (!isMobile) {
+      setActiveIndex(activeIndex === index ? null : index)
+    }
   }
 
   return (
-    <section className="relative py-24 px-4 bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+    <section className="relative px-4 bg-background overflow-hidden">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start py-24">
         {/* LEFT: Text */}
         <div className="space-y-6 text-center md:text-left sticky top-24 self-start">
           <h2 className="text-3xl md:text-5xl font-bold text-balance">{title}</h2>
@@ -43,26 +85,26 @@ export function AboutSection({ title, description }: AboutSectionProps) {
           </div>
         </div>
 
-        {/* RIGHT: Vertical Accordion */}
-        <div className="flex flex-col space-y-4">
+        {/* RIGHT: Image carousel */}
+        <div ref={containerRef} className="flex flex-col space-y-4 sticky top-24">
           {images.map((image, index) => {
             const isActive = activeIndex === index
             return (
               <motion.div
                 key={index}
                 layout
+                onClick={() => toggle(index)}
                 transition={{ type: "spring", stiffness: 150, damping: 25 }}
-                className={`relative overflow-hidden rounded-2xl shadow-xl cursor-pointer ${
+                className={`about-image-item relative overflow-hidden rounded-2xl shadow-xl cursor-pointer ${
                   isActive ? "h-[400px]" : "h-[120px]"
                 }`}
-                onClick={() => toggle(index)}
               >
                 <div className="relative w-full h-full">
                   <Image
                     src={image.src}
                     alt={image.caption}
                     fill
-                    className={`object-cover transition-all duration-500 ${
+                    className={`object-cover transition-all duration-700 ${
                       isActive ? "brightness-100 scale-105" : "brightness-50"
                     }`}
                     priority={index === 0}

@@ -7,15 +7,13 @@ import { Badge } from "@/components/ui/badge"
 import { X, Check } from "lucide-react"
 
 const AVAILABLE_IMAGES = [
-  "/bnb-breakfast-area.jpg",
-  "/bnb-exterior-view.jpg",
-  "/cozy-bnb-living-room.jpg",
-  "/modern-bnb-bedroom.jpg",
-  "/placeholder-logo.png",
-  "/placeholder-logo.svg",
-  "/placeholder-user.jpg",
-  "/placeholder.jpg",
-  "/placeholder.svg",
+  "/IMG_20250907_172002.jpg",
+  "/IMG_20251002_175854.jpg",
+  "/IMG_20251006_155403.jpg",
+  "/IMG_20251007_170916.jpg",
+  "/IMG_20251006_155420_1.jpg",
+  "/IMG_20251007_171543.jpg",
+  "/IMG_20251007_170933.jpg",
 ]
 
 interface ImageSelectorProps {
@@ -25,7 +23,7 @@ interface ImageSelectorProps {
   title?: string
 }
 
-export function ImageSelector({ selectedImages, onImagesChange, maxImages, title = "Selectee afbeelingen" }: ImageSelectorProps) {
+export function ImageSelector({ selectedImages, onImagesChange, maxImages, title = "Selecteer afbeelingen" }: ImageSelectorProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleImage = (image: string) => {
