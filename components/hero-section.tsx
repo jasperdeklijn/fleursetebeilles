@@ -58,8 +58,8 @@ export function HeroSection({ title, subtitle, ctaText }: HeroSectionProps) {
             opacity: `${1 - scrollProgress * 1.2}`,
           }}
         >
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">{title}</h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-90">{subtitle}</p>
+         <h1 className="text-4xl md:text-6xl font-bold mb-6">{title}</h1>
+          <p className="text-xl md:text-xl max-w-2xl mb-8 opacity-90">{subtitle}</p>
           <Button size="lg" className="text-lg px-8 py-6 bg-primary hover:bg-primary/90">
             {ctaText}
           </Button>

@@ -72,17 +72,6 @@ export function AboutSection({ title, description }: AboutSectionProps) {
         <div className="space-y-6 text-center md:text-left sticky top-24 self-start">
           <h2 className="text-3xl md:text-5xl font-bold text-balance">{title}</h2>
           <p className="text-lg text-muted-foreground leading-relaxed">{description}</p>
-
-          <div className="space-y-4 text-muted-foreground">
-            <p>
-              We offer a peaceful retreat surrounded by nature — ideal for relaxation,
-              adventure, or quiet reflection. Every room is designed to make you feel at home.
-            </p>
-            <p>
-              Our team ensures that each guest has a memorable stay, whether you’re
-              here for a weekend escape or a longer visit.
-            </p>
-          </div>
         </div>
 
         {/* RIGHT: Image carousel */}
