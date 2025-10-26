@@ -117,6 +117,7 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
           <ContactSection
             title={content.contact_title || fallback.contact_title}
             description={content.contact_description || fallback.contact_description}
+            lang={lang}
           />
         </section>
       </main>

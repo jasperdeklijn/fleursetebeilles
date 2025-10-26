@@ -4,13 +4,81 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, Phone, MapPin } from "lucide-react"
+import { SiInstagram } from 'react-icons/si';
+
+type Lang = "en" | "fr" | "nl"
 
 interface ContactSectionProps {
   title: string
   description: string
+  lang?: Lang
 }
 
-export function ContactSection({ title, description }: ContactSectionProps) {
+const labels: Record<Lang, {
+  firstName: string
+  lastName: string
+  email: string
+  dates: string
+  message: string
+  sendButton: string
+  emailTitle: string
+  phoneTitle: string
+  addressTitle: string
+  socialsTitle: string
+  addressLine1: string
+  addressLine2: string
+  instagramHandle: string
+}> = {
+  en: {
+    firstName: "First name",
+    lastName: "Last name",
+    email: "Email",
+    dates: "Desired dates",
+    message: "Message",
+    sendButton: "Send Message",
+    emailTitle: "Email",
+    phoneTitle: "Phone",
+    addressTitle: "Address",
+    socialsTitle: "Socials",
+    addressLine1: "Hoofdstraat 123",
+    addressLine2: "City centre",
+    instagramHandle: "@fleursetabeilles",
+  },
+  fr: {
+    firstName: "Prénom",
+    lastName: "Nom",
+    email: "E-mail",
+    dates: "Dates souhaitées",
+    message: "Message",
+    sendButton: "Envoyer le message",
+    emailTitle: "E-mail",
+    phoneTitle: "Téléphone",
+    addressTitle: "Adresse",
+    socialsTitle: "Réseaux",
+    addressLine1: "Hoofdstraat 123",
+    addressLine2: "Centre-ville",
+    instagramHandle: "@fleursetabeilles",
+  },
+  nl: {
+    firstName: "Voornaam",
+    lastName: "Achternaam",
+    email: "E-mail",
+    dates: "Gewenste data",
+    message: "Bericht",
+    sendButton: "Bericht Versturen",
+    emailTitle: "E-mail",
+    phoneTitle: "Telefoon",
+    addressTitle: "Adres",
+    socialsTitle: "Socials",
+    addressLine1: "Hoofdstraat 123",
+    addressLine2: "Stadscentrum",
+    instagramHandle: "@fleursetabeilles",
+  },
+}
+
+export function ContactSection({ title, description, lang = "nl" }: ContactSectionProps) {
+  const t = labels[lang] || labels.nl
+
   return (
     <section className="py-16 px-4 bg-muted/30">
       <div className="max-w-6xl mx-auto">
@@ -22,32 +90,32 @@ export function ContactSection({ title, description }: ContactSectionProps) {
         <div className="grid md:grid-cols-2 gap-8">
           <Card>
             <CardHeader>
-              <CardTitle>Stuur ons een bericht</CardTitle>
+              <CardTitle>{t.sendButton}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="firstName">Voornaam</Label>
-                  <Input id="firstName" placeholder="Jan" />
+                  <Label htmlFor="firstName">{t.firstName}</Label>
+                  <Input id="firstName" placeholder={t.firstName === "Voornaam" ? "Jan" : "Jan"} />
                 </div>
                 <div>
-                  <Label htmlFor="lastName">Achternaam</Label>
-                  <Input id="lastName" placeholder="de Vries" />
+                  <Label htmlFor="lastName">{t.lastName}</Label>
+                  <Input id="lastName" placeholder={t.lastName === "Achternaam" ? "de Vries" : "de Vries"} />
                 </div>
               </div>
               <div>
-                <Label htmlFor="email">E-mail</Label>
+                <Label htmlFor="email">{t.email}</Label>
                 <Input id="email" type="email" placeholder="jan@voorbeeld.nl" />
               </div>
               <div>
-                <Label htmlFor="dates">Gewenste Data</Label>
-                <Input id="dates" placeholder="Inchecken tot Uitchecken" />
+                <Label htmlFor="dates">{t.dates}</Label>
+                <Input id="dates" placeholder={t.dates} />
               </div>
               <div>
-                <Label htmlFor="message">Bericht</Label>
-                <Textarea id="message" placeholder="Vertel ons over uw verblijfvoorkeuren..." rows={4} />
+                <Label htmlFor="message">{t.message}</Label>
+                <Textarea id="message" placeholder={t.message + "..."} rows={4} />
               </div>
-              <Button className="w-full">Bericht Versturen</Button>
+              <Button className="w-full">{t.sendButton}</Button>
             </CardContent>
           </Card>
 
@@ -56,8 +124,8 @@ export function ContactSection({ title, description }: ContactSectionProps) {
               <div className="flex items-center gap-4">
                 <Mail className="h-6 w-6 text-primary" />
                 <div>
-                  <h3 className="font-semibold">E-mail</h3>
-                  <p className="text-muted-foreground">info@prachtigebnb.nl</p>
+                  <h3 className="font-semibold">{t.emailTitle}</h3>
+                  <a href="mailto:info@fleursetabeilles.fr" className="text-muted-foreground">info@fleursetabeilles.fr</a>
                 </div>
               </div>
             </Card>
@@ -66,8 +134,8 @@ export function ContactSection({ title, description }: ContactSectionProps) {
               <div className="flex items-center gap-4">
                 <Phone className="h-6 w-6 text-primary" />
                 <div>
-                  <h3 className="font-semibold">Telefoon</h3>
-                  <p className="text-muted-foreground">+31 20 123 4567</p>
+                  <h3 className="font-semibold">{t.phoneTitle}</h3>
+                  <a href="tel:+31201234567" className="text-muted-foreground">+31 20 123 4567</a>
                 </div>
               </div>
             </Card>
@@ -76,24 +144,31 @@ export function ContactSection({ title, description }: ContactSectionProps) {
               <div className="flex items-center gap-4">
                 <MapPin className="h-6 w-6 text-primary" />
                 <div>
-                  <h3 className="font-semibold">Adres</h3>
+                  <h3 className="font-semibold">{t.addressTitle}</h3>
                   <p className="text-muted-foreground">
-                    Hoofdstraat 123
+                    {t.addressLine1}
                     <br />
-                    Stadscentrum
+                    {t.addressLine2}
                   </p>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6 bg-primary text-primary-foreground">
-              <h3 className="font-semibold mb-2">Snelle Boeking</h3>
-              <p className="text-sm opacity-90 mb-4">
-                Voor directe boekingen, bel ons rechtstreeks of gebruik ons online boekingssysteem.
-              </p>
-              <Button variant="secondary" className="w-full">
-                Nu Boeken
-              </Button>
+             <Card className="p-6">
+              <div className="flex items-center gap-4">
+                <SiInstagram size={24}  className="h-6 w-6 text-primary" />
+                <div>
+                  <h3 className="font-semibold">{t.socialsTitle}</h3>
+                  <a
+                    href="https://instagram.com/fleursetabeilles"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex w-full items-center justify-center px-4 py-2 rounded-md bg-white text-primary text-sm font-medium shadow-sm hover:opacity-90"
+                  >
+                    {t.instagramHandle}
+                  </a>
+                </div>
+              </div>
             </Card>
           </div>
         </div>
