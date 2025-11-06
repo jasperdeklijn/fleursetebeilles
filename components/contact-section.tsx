@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -5,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, Phone, MapPin } from "lucide-react"
 import { SiInstagram } from 'react-icons/si';
+// Import server action from separate module
+import { sendContact } from "@/actions/sendContact";
 
 type Lang = "en" | "fr" | "nl"
 
@@ -93,29 +97,31 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
               <CardTitle>{t.sendButton}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="firstName">{t.firstName}</Label>
-                  <Input id="firstName" placeholder={t.firstName === "Voornaam" ? "Jan" : "Jan"} />
+              <form action={sendContact}>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="firstName">{t.firstName}</Label>
+                    <Input id="firstName" name="firstName" placeholder={t.firstName === "Voornaam" ? "Jan" : "Jan"} />
+                  </div>
+                  <div>
+                    <Label htmlFor="lastName">{t.lastName}</Label>
+                    <Input id="lastName" name="lastName" placeholder={t.lastName === "Achternaam" ? "de Vries" : "de Vries"} />
+                  </div>
                 </div>
                 <div>
-                  <Label htmlFor="lastName">{t.lastName}</Label>
-                  <Input id="lastName" placeholder={t.lastName === "Achternaam" ? "de Vries" : "de Vries"} />
+                  <Label htmlFor="email">{t.email}</Label>
+                  <Input id="email" name="email" type="email" placeholder="jan@voorbeeld.nl" />
                 </div>
-              </div>
-              <div>
-                <Label htmlFor="email">{t.email}</Label>
-                <Input id="email" type="email" placeholder="jan@voorbeeld.nl" />
-              </div>
-              <div>
-                <Label htmlFor="dates">{t.dates}</Label>
-                <Input id="dates" placeholder={t.dates} />
-              </div>
-              <div>
-                <Label htmlFor="message">{t.message}</Label>
-                <Textarea id="message" placeholder={t.message + "..."} rows={4} />
-              </div>
-              <Button className="w-full">{t.sendButton}</Button>
+                <div>
+                  <Label htmlFor="dates">{t.dates}</Label>
+                  <Input id="dates" name="dates" placeholder={t.dates} />
+                </div>
+                <div>
+                  <Label htmlFor="message">{t.message}</Label>
+                  <Textarea id="message" name="message" placeholder={t.message + "..."} rows={4} />
+                </div>
+                <Button type="submit" className="w-full">{t.sendButton}</Button>
+              </form>
             </CardContent>
           </Card>
 
