@@ -20,7 +20,7 @@ export async function sendContact(formData: FormData) {
   const dates = String(formData.get("dates") ?? "").trim();
   const message = String(formData.get("message") ?? "").trim();
 
-  const fromEmail = process.env.NO_REPLY_EMAIL ?? "no-reply@fleursetabeilles.local";
+  const fromEmail = process.env.NO_REPLY_EMAIL ?? "info@fleursetabeilles.fr";
   const toEmail = "jasperdeklijn@gmail.com"; // or info@fleursetabeilles.fr
   const subject = `Contact form — ${firstName} ${lastName}${email ? ` (${email})` : ""}`;
 
@@ -33,13 +33,14 @@ export async function sendContact(formData: FormData) {
   `;
 
   try {
+    console.log("Sending contact form email...");
     const result = await resend.emails.send({
       from: `Fleurs & Abeilles <${fromEmail}>`,
       to: [toEmail],
       subject,
       html,
     });
-
+console.log("Contact form email sent:", result);
     return { success: true, result };
   } catch (error) {
     console.error("sendContact error:", error);
