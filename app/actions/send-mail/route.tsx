@@ -35,7 +35,7 @@ export async function POST(request: Request) {
 
     const mailOptions = {
       from: process.env.STRATO_EMAIL,
-      to: "jasperdeklijn@gmail.com",
+      to: process.env.STRATO_EMAIL,
       subject: "Nieuw contactformulier bericht",
       text: textBody,
       replyTo: senderEmail || undefined
