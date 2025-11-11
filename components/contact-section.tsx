@@ -1,14 +1,13 @@
 "use client"
 
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, Phone, MapPin } from "lucide-react"
-import { SiInstagram } from 'react-icons/si';
-// Import server action from separate module
-import { sendContact } from "@/actions/sendContact";
+import { SiInstagram } from 'react-icons/si'
 
 type Lang = "en" | "fr" | "nl"
 
@@ -82,6 +81,46 @@ const labels: Record<Lang, {
 
 export function ContactSection({ title, description, lang = "nl" }: ContactSectionProps) {
   const t = labels[lang] || labels.nl
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.currentTarget as HTMLFormElement
+
+    setLoading(true)
+    setSuccess(false)
+    setError(null)
+
+    const formData = new FormData(form)
+    const data = {
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      email: formData.get("email"),
+      dates: formData.get("dates"),
+      message: formData.get("message"),
+    }
+
+    try {
+      const res = await fetch("/actions/send-mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      })
+      if (res.ok) {
+        setSuccess(true)
+        form.reset() // use stored form reference
+      } else {
+        const result = await res.json().catch(() => ({}))
+        setError(result.error || "Failed to send message.")
+      }
+    } catch (err: any) {
+      setError(err.message || "Network error.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <section className="py-16 px-4 bg-muted/30">
@@ -97,7 +136,7 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
               <CardTitle>{t.sendButton}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <form action={sendContact}>
+              <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="firstName">{t.firstName}</Label>
@@ -120,7 +159,19 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
                   <Label htmlFor="message">{t.message}</Label>
                   <Textarea id="message" name="message" placeholder={t.message + "..."} rows={4} />
                 </div>
-                <Button type="submit" className="w-full">{t.sendButton}</Button>
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                      </svg>
+                      Sending...
+                    </span>
+                  ) : t.sendButton}
+                </Button>
+                {success && <p className="text-green-600 mt-2">Message sent successfully!</p>}
+                {error && <p className="text-red-600 mt-2">{error}</p>}
               </form>
             </CardContent>
           </Card>

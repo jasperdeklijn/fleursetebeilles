@@ -8,7 +8,7 @@ import { ContentEditor } from "./content-editor"
 import { RoomsEditor } from "./rooms-editor"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
-import { LogOut,  Home, FileText, Building, DoorOpen } from "lucide-react"
+import { LogOut,  Home, FileText, Building, DoorOpen, MapPinned } from "lucide-react"
 import Link from "next/link"
 
 export function AdminDashboard() {
@@ -48,7 +48,7 @@ export function AdminDashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         <Tabs defaultValue="content" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 max-w-2xl">
+          <TabsList className="grid w-full grid-cols-3 max-w-2xl">
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               Inhoud
@@ -56,6 +56,10 @@ export function AdminDashboard() {
             <TabsTrigger value="rooms" className="flex items-center gap-2">
               <DoorOpen className="h-4 w-4" />
               Kamers
+            </TabsTrigger>
+            <TabsTrigger value="activities" className="flex items-center gap-2">
+              <MapPinned className="h-4 w-4" />
+              Activiteiten
             </TabsTrigger>
           </TabsList>
 
@@ -79,6 +83,16 @@ export function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <RoomsEditor />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="activities">
+            <Card>
+              <CardHeader>
+                <CardTitle>Locale activiteiten</CardTitle>
+                <p className="text-muted-foreground">Maak en bewerk activiteiten.</p>
+              </CardHeader>
+              <CardContent>
               </CardContent>
             </Card>
           </TabsContent>
