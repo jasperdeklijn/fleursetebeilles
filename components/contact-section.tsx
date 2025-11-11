@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -85,6 +85,30 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // toast state
+  const [toastVisible, setToastVisible] = useState(false)
+  const toastTimerRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) {
+        clearTimeout(toastTimerRef.current)
+      }
+    }
+  }, [])
+
+  function getSuccessMessage(lang: Lang) {
+    switch (lang) {
+      case "en":
+        return "Message sent successfully!"
+      case "fr":
+        return "Message envoyé avec succès !"
+      case "nl":
+      default:
+        return "Bericht succesvol verzonden!"
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget as HTMLFormElement
@@ -110,7 +134,14 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
       })
       if (res.ok) {
         setSuccess(true)
-        form.reset() // use stored form reference
+        form.reset() // safe: stored reference used
+        // show toast
+        setToastVisible(true)
+        if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+        toastTimerRef.current = window.setTimeout(() => {
+          setToastVisible(false)
+          toastTimerRef.current = null
+        }, 4000)
       } else {
         const result = await res.json().catch(() => ({}))
         setError(result.error || "Failed to send message.")
@@ -170,7 +201,6 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
                     </span>
                   ) : t.sendButton}
                 </Button>
-                {success && <p className="text-green-600 mt-2">Message sent successfully!</p>}
                 {error && <p className="text-red-600 mt-2">{error}</p>}
               </form>
             </CardContent>
@@ -230,6 +260,33 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
           </div>
         </div>
       </div>
+
+      {/* toast top-right */}
+      {toastVisible && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed top-4 right-4 z-50 max-w-xs w-full"
+        >
+          <div className="bg-white border border-gray-200 shadow-md rounded-md p-3 flex items-start gap-3">
+            <div className="text-green-600">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium">{getSuccessMessage(lang)}</p>
+            </div>
+            <button
+              onClick={() => setToastVisible(false)}
+              aria-label="Dismiss"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
