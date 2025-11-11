@@ -9,10 +9,9 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Beautiful BnB - Multilingual Bed & Breakfast",
+  title: "Fleurs et Abeilles",
   description:
     "Experience comfort and luxury in our beautiful bed and breakfast. Available in English, Dutch, and French.",
-  generator: "v0.app",
 }
 
 export default function RootLayout({
