@@ -70,7 +70,10 @@ export function AdminDashboard() {
                 <p className="text-muted-foreground">Bewerk de tekst die op uw website verschijnt.</p>
               </CardHeader>
               <CardContent>
-                <ContentEditor />
+                {/* preserve spaces & newlines when previewing or showing content */}
+                <div className="whitespace-pre-wrap">
+                  <ContentEditor />
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

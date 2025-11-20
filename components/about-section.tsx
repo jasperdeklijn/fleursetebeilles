@@ -69,9 +69,9 @@ export function AboutSection({ title, description }: AboutSectionProps) {
     <section className="relative px-4 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start py-24">
         {/* LEFT: Text */}
-        <div className="space-y-6 text-center md:text-left sticky top-24 self-start">
+        <div className="space-y-6 text-center sticky top-24 self-start">
           <h2 className="text-3xl md:text-5xl font-bold text-balance">{title}</h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">{description}</p>
+          <p className="text-lg text-muted-foreground leading-relaxed whitespace-pre-wrap">{description}</p>
         </div>
 
         {/* RIGHT: Image carousel */}
@@ -100,20 +100,8 @@ export function AboutSection({ title, description }: AboutSectionProps) {
                   />
                 </div>
 
-                {/* Caption */}
-                <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-black/70 via-transparent to-transparent">
-                  <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{
-                      opacity: isActive ? 1 : 0,
-                      y: isActive ? 0 : 20,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="text-white text-lg md:text-xl font-medium mb-4 text-center px-4"
-                  >
-                    {image.caption}
-                  </motion.p>
-                </div>
+                {/* Caption overlay (gradient only - no text) */}
+                <div className="absolute inset-0 flex items-end justify-center bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
               </motion.div>
             )
           })}
