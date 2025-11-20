@@ -43,8 +43,8 @@ const labels: Record<Lang, {
     phoneTitle: "Phone",
     addressTitle: "Address",
     socialsTitle: "Socials",
-    addressLine1: "Hoofdstraat 123",
-    addressLine2: "City centre",
+    addressLine1: "5 Place de l'eglise 79350",
+    addressLine2: "Faye-l'Abbesse",
     instagramHandle: "@fleursetabeilles",
   },
   fr: {
@@ -58,8 +58,8 @@ const labels: Record<Lang, {
     phoneTitle: "Téléphone",
     addressTitle: "Adresse",
     socialsTitle: "Réseaux",
-    addressLine1: "Hoofdstraat 123",
-    addressLine2: "Centre-ville",
+    addressLine1: "5 Place de l'eglise 79350",
+    addressLine2: "Faye-l'Abbesse",
     instagramHandle: "@fleursetabeilles",
   },
   nl: {
@@ -73,8 +73,8 @@ const labels: Record<Lang, {
     phoneTitle: "Telefoon",
     addressTitle: "Adres",
     socialsTitle: "Socials",
-    addressLine1: "Hoofdstraat 123",
-    addressLine2: "Stadscentrum",
+    addressLine1: "5 Place de l'eglise 79350",
+    addressLine2: "Faye-l'Abbesse",
     instagramHandle: "@fleursetabeilles",
   },
 }
@@ -169,24 +169,24 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
             <CardContent className="space-y-4">
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-4">
-                  <div>
+                  <div className="space-y-2">
                     <Label htmlFor="firstName">{t.firstName}</Label>
                     <Input id="firstName" name="firstName" placeholder={t.firstName === "Voornaam" ? "Jan" : "Jan"} />
                   </div>
-                  <div>
+                  <div className="space-y-2">
                     <Label htmlFor="lastName">{t.lastName}</Label>
                     <Input id="lastName" name="lastName" placeholder={t.lastName === "Achternaam" ? "de Vries" : "de Vries"} />
                   </div>
                 </div>
-                <div>
+                <div className="space-y-2 mt-2">
                   <Label htmlFor="email">{t.email}</Label>
                   <Input id="email" name="email" type="email" placeholder="jan@voorbeeld.nl" />
                 </div>
-                <div>
+                <div className="space-y-2 mt-2">
                   <Label htmlFor="dates">{t.dates}</Label>
                   <Input id="dates" name="dates" placeholder={t.dates} />
                 </div>
-                <div>
+                <div className="space-y-2 mt-2">
                   <Label htmlFor="message">{t.message}</Label>
                   <Textarea id="message" name="message" placeholder={t.message + "..."} rows={4} />
                 </div>
@@ -222,7 +222,7 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
                 <Phone className="h-6 w-6 text-primary" />
                 <div>
                   <h3 className="font-semibold">{t.phoneTitle}</h3>
-                  <a href="tel:+31201234567" className="text-muted-foreground">+31 20 123 4567</a>
+                  <a href="tel:+31744540521" className="text-muted-foreground">+31 744540521</a>
                 </div>
               </div>
             </Card>

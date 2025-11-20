@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
@@ -46,9 +46,11 @@ const translations = {
 
 export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
   const t = translations[lang]
+  const containerRef = useRef<HTMLDivElement | null>(null)
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
+  const [centerItems, setCenterItems] = useState(false)
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768)
@@ -56,6 +58,25 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+  // center cards when total width of cards is <= container width
+  useEffect(() => {
+    const computeCenter = () => {
+      const container = containerRef.current
+      if (!container) return
+
+      // card width values must match the classes used for each card
+      const cardWidth = window.innerWidth >= 768 ? 420 : 360
+      const gap = 24 // space-x-6 = 1.5rem = 24px
+      const totalWidth = rooms.length * cardWidth + Math.max(0, rooms.length - 1) * gap
+
+      setCenterItems(totalWidth <= container.clientWidth)
+    }
+
+    computeCenter()
+    window.addEventListener("resize", computeCenter)
+    return () => window.removeEventListener("resize", computeCenter)
+  }, [rooms])
 
   const nextImage = () => {
     if (!selectedRoom) return
@@ -106,7 +127,10 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
 
         <div
           id="rooms-scroll"
-          className="flex overflow-x-auto snap-x snap-mandatory space-x-6 px-6 scrollbar-hide scroll-smooth"
+          ref={containerRef}
+          className={`flex overflow-x-auto snap-x snap-mandatory space-x-6 px-6 scrollbar-hide scroll-smooth ${
+            centerItems ? "justify-center" : ""
+          }`}
         >
           {rooms
             .sort((a, b) => a.sort_order - b.sort_order)
@@ -117,7 +141,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="snap-center min-w-[320px] md:min-w-[420px] flex-shrink-0"
+                className="snap-center w-[360px] md:w-[420px] flex-shrink-0"
               >
                 <Card className="overflow-hidden rounded-3xl shadow-lg group bg-background">
                   {/* Room Image */}

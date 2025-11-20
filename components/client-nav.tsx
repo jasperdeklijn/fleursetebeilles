@@ -8,7 +8,6 @@ const navSections = [
   { id: "hero", label: { en: "Home", fr: "Accueil", nl: "Home" } },
   { id: "about", label: { en: "About", fr: "À propos", nl: "Over" } },
   { id: "rooms", label: { en: "Rooms", fr: "Chambres", nl: "Kamers" } },
-  { id: "pricing", label: { en: "Pricing", fr: "Tarifs", nl: "Prijzen" } },
   { id: "contact", label: { en: "Contact", fr: "Contact", nl: "Contact" } },
 ]
 

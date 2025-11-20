@@ -105,14 +105,6 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
           <RoomsSection rooms={room} lang={lang} />
         </section>
 
-        <section id="pricing">
-          <PricingSection
-            title={content.pricing_title || fallback.pricing_title}
-            description={content.pricing_description || fallback.pricing_description}
-            rooms={room}
-          />
-        </section>
-
         <section id="contact">
           <ContactSection
             title={content.contact_title || fallback.contact_title}
