@@ -106,24 +106,28 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
       {/* Horizontal Scroll Carousel */}
       <div className="relative">
         {/* Always-visible navigation arrows */}
-        <button
-          className="absolute left-2 top-1/2 -translate-y-1/2 bg-primary text-white rounded-full p-2 shadow-md z-10"
-          onClick={() => {
-            const container = document.getElementById("rooms-scroll")
-            if (container) container.scrollBy({ left: -350, behavior: "smooth" })
-          }}
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button
-          className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white rounded-full p-2 shadow-md z-10"
-          onClick={() => {
-            const container = document.getElementById("rooms-scroll")
-            if (container) container.scrollBy({ left: 350, behavior: "smooth" })
-          }}
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
+        {rooms.length > 1 && (
+          <>
+            <button
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-primary text-white rounded-full p-2 shadow-md z-10"
+              onClick={() => {
+                const container = document.getElementById("rooms-scroll")
+                if (container) container.scrollBy({ left: -350, behavior: "smooth" })
+              }}
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-primary text-white rounded-full p-2 shadow-md z-10"
+              onClick={() => {
+                const container = document.getElementById("rooms-scroll")
+                if (container) container.scrollBy({ left: 350, behavior: "smooth" })
+              }}
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </>
+        )}
 
         <div
           id="rooms-scroll"
@@ -232,6 +236,20 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
             if (e.target === e.currentTarget) setSelectedRoom(null)
           }}
         >
+          {/* Preload carousel images */}
+          <div className="hidden">
+            {selectedRoom.images.map((image, idx) => (
+              <Image
+                key={idx}
+                src={image}
+                alt={`${selectedRoom.name} ${idx}`}
+                width={1200}
+                height={400}
+                priority={idx === activeImageIndex}
+              />
+            ))}
+          </div>
+
           <div className="relative w-full max-w-3xl bg-background rounded-2xl overflow-hidden shadow-xl">
             <button
               className="absolute top-3 right-3 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition"
@@ -277,6 +295,20 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
       {/* Mobile Drawer */}
       {selectedRoom && isMobile && (
         <Drawer open={!!selectedRoom} onOpenChange={() => setSelectedRoom(null)}>
+          {/* Preload carousel images */}
+          <div className="hidden">
+            {selectedRoom.images.map((image, idx) => (
+              <Image
+                key={idx}
+                src={image}
+                alt={`${selectedRoom.name} ${idx}`}
+                width={1200}
+                height={300}
+                priority={idx === activeImageIndex}
+              />
+            ))}
+          </div>
+
           <DrawerContent className="max-h-[85vh] overflow-hidden">
             <DrawerHeader className="flex justify-between items-center px-4">
               <DrawerTitle>{selectedRoom.name}</DrawerTitle>

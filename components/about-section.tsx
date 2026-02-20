@@ -69,7 +69,7 @@ export function AboutSection({ title, description }: AboutSectionProps) {
     <section className="relative px-4 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start py-24">
         {/* LEFT: Text */}
-        <div className="space-y-6 text-center sticky top-24 self-start">
+        <div className="space-y-6 sticky top-24 self-start p-8 rounded-3xl bg-gradient-to-br from-green-100/60 to-green-50/30 dark:from-green-950/40 dark:to-green-900/20 border border-green-200 dark:border-green-800 backdrop-blur-sm shadow-lg">
           <h2 className="text-3xl md:text-5xl font-bold text-balance">{title}</h2>
           <p className="text-lg text-muted-foreground leading-relaxed whitespace-pre-wrap">{description}</p>
         </div>
