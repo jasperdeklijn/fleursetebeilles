@@ -28,6 +28,7 @@ export function PricingSection({ title, description, lang }: PricingSectionProps
       id: "diner",
       price: 25,
       name: { nl: "Diner", en: "Dinner", fr: "Dîner" },
+      note: { en: "per person", nl: "per persoon", fr: "par personne" },
     }
   ]
 

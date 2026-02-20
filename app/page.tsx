@@ -37,7 +37,7 @@ const fallbackTexts: Record<Lang, {
     pricing_description: "Competitive rates with exceptional value",
     contact_title: "Get In Touch",
     contact_description: "Ready to book your stay?",
-    footer_text: "© 2025 Beautiful BnB. All rights reserved.",
+    footer_text: "© 2026 Beautiful BnB. All rights reserved.",
   },
   fr: {
     hero_title: "Bienvenue dans Notre Magnifique BnB",
@@ -50,7 +50,7 @@ const fallbackTexts: Record<Lang, {
     pricing_description: "Tarifs compétitifs avec une valeur exceptionnelle",
     contact_title: "Contactez-Nous",
     contact_description: "Prêt à réserver votre séjour?",
-    footer_text: "© 2025 Magnifique BnB. Tous droits réservés.",
+    footer_text: "© 2026 Magnifique BnB. Tous droits réservés.",
   },
   nl: {
   // Get language from query param, default to 'en'
@@ -64,7 +64,7 @@ const fallbackTexts: Record<Lang, {
     pricing_description: "Concurrerende tarieven met uitzonderlijke waarde",
     contact_title: "Neem Contact Op",
     contact_description: "Klaar om uw verblijf te boeken?",
-    footer_text: "© 2025 Prachtige BnB. Alle rechten voorbehouden.",
+    footer_text: "© 2026 Prachtige BnB. Alle rechten voorbehouden.",
   },
 }
 
