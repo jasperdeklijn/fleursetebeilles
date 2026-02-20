@@ -205,7 +205,7 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
   }
 
   return (
-    <section className="py-16 px-4 bg-muted/30">
+    <section className="py-16 px-4 bg-gradient-to-br from-green-100/60 to-green-50/30 dark:from-green-950/40 dark:to-green-900/20">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">{title}</h2>

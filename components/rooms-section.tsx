@@ -91,7 +91,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
   }
 
   return (
-    <section id="rooms" className="relative py-20 bg-muted/30 overflow-hidden">
+    <section id="rooms" className="relative py-20 bg-gradient-to-br from-green-100/60 to-green-50/30 dark:from-green-950/40 dark:to-green-900/20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 text-center mb-12">
         <h2 className="text-4xl md:text-5xl font-bold mb-4">{t.title}</h2>
         <p className="text-muted-foreground text-lg">
