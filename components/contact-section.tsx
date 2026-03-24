@@ -84,6 +84,7 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({})
 
   // toast state
   const [toastVisible, setToastVisible] = useState(false)
@@ -109,6 +110,46 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
     }
   }
 
+  function validateForm(formData: FormData): Record<string, string> {
+    const errors: Record<string, string> = {}
+    
+    // Honeypot check (spam protection)
+    if (formData.get("website")) {
+      errors.honeypot = "Invalid submission"
+      return errors
+    }
+    
+    const firstName = (formData.get("firstName") as string)?.trim() || ""
+    const lastName = (formData.get("lastName") as string)?.trim() || ""
+    const email = (formData.get("email") as string)?.trim() || ""
+    const dates = (formData.get("dates") as string)?.trim() || ""
+    const message = (formData.get("message") as string)?.trim() || ""
+    
+    if (!firstName || firstName.length < 2) {
+      errors.firstName = "First name must be at least 2 characters"
+    }
+    
+    if (!lastName || lastName.length < 2) {
+      errors.lastName = "Last name must be at least 2 characters"
+    }
+    
+    if (!email) {
+      errors.email = "Email is required"
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = "Invalid email address"
+    }
+    
+    if (!dates || dates.length < 3) {
+      errors.dates = "Desired dates are required"
+    }
+    
+    if (!message || message.length < 10) {
+      errors.message = "Message must be at least 10 characters"
+    }
+    
+    return errors
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const form = e.currentTarget as HTMLFormElement
@@ -116,8 +157,18 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
     setLoading(true)
     setSuccess(false)
     setError(null)
+    setValidationErrors({})
 
     const formData = new FormData(form)
+    
+    // Validate form
+    const errors = validateForm(formData)
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors)
+      setLoading(false)
+      return
+    }
+    
     const data = {
       firstName: formData.get("firstName"),
       lastName: formData.get("lastName"),
@@ -154,7 +205,7 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
   }
 
   return (
-    <section className="py-16 px-4 bg-muted/30">
+    <section className="py-16 px-4 bg-gradient-to-br from-green-100/60 to-green-50/30 dark:from-green-950/40 dark:to-green-900/20">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-balance">{title}</h2>
@@ -168,27 +219,86 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
             </CardHeader>
             <CardContent className="space-y-4">
               <form onSubmit={handleSubmit}>
+                {/* Honeypot field for spam protection */}
+                <input type="hidden" name="website" value="" />
+                
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="firstName">{t.firstName}</Label>
-                    <Input id="firstName" name="firstName" placeholder={t.firstName === "Voornaam" ? "Jan" : "Jan"} />
+                    <Input 
+                      id="firstName" 
+                      name="firstName" 
+                      placeholder={t.firstName === "Voornaam" ? "Jan" : "Jan"}
+                      required
+                      minLength={2}
+                      maxLength={50}
+                      className={validationErrors.firstName ? "border-red-500" : ""}
+                    />
+                    {validationErrors.firstName && (
+                      <p className="text-red-600 text-sm">{validationErrors.firstName}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="lastName">{t.lastName}</Label>
-                    <Input id="lastName" name="lastName" placeholder={t.lastName === "Achternaam" ? "de Vries" : "de Vries"} />
+                    <Input 
+                      id="lastName" 
+                      name="lastName" 
+                      placeholder={t.lastName === "Achternaam" ? "de Vries" : "de Vries"}
+                      required
+                      minLength={2}
+                      maxLength={50}
+                      className={validationErrors.lastName ? "border-red-500" : ""}
+                    />
+                    {validationErrors.lastName && (
+                      <p className="text-red-600 text-sm">{validationErrors.lastName}</p>
+                    )}
                   </div>
                 </div>
                 <div className="space-y-2 mt-2">
                   <Label htmlFor="email">{t.email}</Label>
-                  <Input id="email" name="email" type="email" placeholder="jan@voorbeeld.nl" />
+                  <Input 
+                    id="email" 
+                    name="email" 
+                    type="email" 
+                    placeholder="jan@voorbeeld.nl"
+                    required
+                    maxLength={100}
+                    className={validationErrors.email ? "border-red-500" : ""}
+                  />
+                  {validationErrors.email && (
+                    <p className="text-red-600 text-sm">{validationErrors.email}</p>
+                  )}
                 </div>
                 <div className="space-y-2 mt-2">
                   <Label htmlFor="dates">{t.dates}</Label>
-                  <Input id="dates" name="dates" placeholder={t.dates} />
+                  <Input 
+                    id="dates" 
+                    name="dates" 
+                    placeholder={t.dates}
+                    required
+                    minLength={3}
+                    maxLength={100}
+                    className={validationErrors.dates ? "border-red-500" : ""}
+                  />
+                  {validationErrors.dates && (
+                    <p className="text-red-600 text-sm">{validationErrors.dates}</p>
+                  )}
                 </div>
                 <div className="space-y-2 mt-2">
                   <Label htmlFor="message">{t.message}</Label>
-                  <Textarea id="message" name="message" placeholder={t.message + "..."} rows={4} />
+                  <Textarea 
+                    id="message" 
+                    name="message" 
+                    placeholder={t.message + "..."} 
+                    rows={4}
+                    required
+                    minLength={10}
+                    maxLength={2000}
+                    className={validationErrors.message ? "border-red-500" : ""}
+                  />
+                  {validationErrors.message && (
+                    <p className="text-red-600 text-sm">{validationErrors.message}</p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? (

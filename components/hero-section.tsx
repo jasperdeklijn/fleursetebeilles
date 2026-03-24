@@ -12,6 +12,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ title, subtitle, ctaText }: HeroSectionProps) {
   const [scrollProgress, setScrollProgress] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +26,16 @@ export function HeroSection({ title, subtitle, ctaText }: HeroSectionProps) {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
   }, [])
 
   return (
@@ -41,7 +52,7 @@ export function HeroSection({ title, subtitle, ctaText }: HeroSectionProps) {
           }}
         >
           <Image
-            src="/IMG_20250520_145641.jpg"
+            src={isMobile ? "/IMG_20250520_145641.jpg" : "/Hero2.jpeg"}
             alt="Natuurlijke omgeving"
             fill
             className="object-cover"

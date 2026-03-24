@@ -1,88 +1,61 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import { Euro, Calendar, Users } from "lucide-react"
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
-import type { Room } from "@/lib/types/room"
+import { useState } from "react"
 
 interface PricingSectionProps {
   title: string
   description: string
-  rooms: Room[]
+  lang: "nl" | "en" | "fr"
 }
 
-export function PricingSection({ title, description, rooms }: PricingSectionProps) {
+export function PricingSection({ title, description, lang }: PricingSectionProps) {
+  type Extra = {
+    id: string
+    price: number
+    name: { nl: string; en: string; fr: string }
+    note?: { nl?: string; en?: string; fr?: string }
+  }
+
+  const extras: Extra[] = [
+    {
+      id: "breakfast",
+      price: 10,
+      name: { nl: "Ontbijt", en: "Breakfast", fr: "Petit déjeuner" },
+      note: { en: "per person", nl: "per persoon", fr: "par personne" },
+    },
+    {
+      id: "diner",
+      price: 25,
+      name: { nl: "Diner", en: "Dinner", fr: "Dîner" },
+      note: { en: "per person", nl: "per persoon", fr: "par personne" },
+    }
+  ]
+
+  const [selectedExtras, setSelectedExtras] = useState<Record<string, boolean>>({})
+
+  const total = extras.reduce((sum, e) => (selectedExtras[e.id] ? sum + e.price : sum), 0)
   return (
-    <section className="py-12 sm:py-16 px-2 sm:px-4">
+    <section className="py-12 sm:py-16 px-2 sm:px-4 bg-gradient-to-br from-green-100/60 to-green-50/30 dark:from-green-950/40 dark:to-green-900/20">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">{title}</h2>
           <p className="text-base sm:text-lg text-muted-foreground">{description}</p>
         </div>
-
-        <Carousel
-          className="max-w-full sm:max-w-3xl mx-auto"
-          opts={{ align: "center", loop: true }}
-        >
-          <CarouselContent className="-ml-2 sm:-ml-4">
-            {rooms.map((room) => (
-              <CarouselItem
-                key={room.id}
-                className="basis-full sm:basis-1/2 md:basis-1/3 pl-2 sm:pl-4"
-              >
-                <Card className="h-full">
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-xl sm:text-2xl">{room.name}</CardTitle>
-                    <div className="flex items-center justify-center gap-2 text-2xl sm:text-3xl font-bold text-primary">
-                      <Euro className="h-6 w-6 sm:h-8 sm:w-8" />
-                      {room.price_per_night}
-                      <span className="text-sm sm:text-lg text-muted-foreground font-normal">/ nacht</span>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent className="space-y-4">
-                    <div className="flex justify-between items-center py-2 border-b">
-                      <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                        <span>Max Gasten</span>
-                      </div>
-                      <Badge variant="secondary">{room.max_guests}</Badge>
-                    </div>
-
-                    <div className="flex justify-between items-center py-2 border-b">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span>Minimum Verblijf</span>
-                      </div>
-                      <Badge variant="secondary">2 nachten</Badge>
-                    </div>
-
-                    <div className="pt-2 sm:pt-4">
-                      <Button className="w-full" size="lg">
-                        Beschikbaarheid Controleren
-                      </Button>
-                    </div>
-
-                    <p className="text-xs text-muted-foreground text-center">
-                      Prijzen kunnen variëren op basis van seizoen en beschikbaarheid
-                    </p>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold mb-4 text-green-600">{lang === "nl" ? "Alle extra's" : lang === "fr" ? "Tous les suppléments" : "All extras"}</h3>
+          <ul className="space-y-3">
+            {extras.map((e) => (
+              <li key={e.id} className="flex items-center justify-between p-3 border rounded-md border-green-200 bg-green-100">
+                <div>
+                  <div className="font-medium text-green-900">{e.name[lang]}</div>
+                  {e.note?.[lang] && <div className="text-sm text-green-800">{e.note[lang]}</div>}
+                </div>
+                <div className="text-sm text-green-700 flex items-center gap-1"><Euro size={14} /> {e.price}</div>
+              </li>
             ))}
-          </CarouselContent>
-
-          <CarouselPrevious className="left-2 sm:-left-10" />
-          <CarouselNext className="right-2 sm:-right-10" />
-        </Carousel>
+          </ul>
+        </div>
       </div>
     </section>
   )
