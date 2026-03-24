@@ -21,7 +21,7 @@ export function PricingSection({ title, description, lang }: PricingSectionProps
     {
       id: "breakfast",
       price: 10,
-      name: { nl: "Ontbijt", en: "Breakfast", fr: "Petit déjeuner" },
+      name: { nl: "Ontbijt", en: "Breakfast (Continental style)", fr: "Petit déjeuner" },
       note: { en: "per person", nl: "per persoon", fr: "par personne" },
     },
     {
