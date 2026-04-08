@@ -274,21 +274,22 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
             ))}
           </div>
 
-          <div className="relative w-full max-w-3xl bg-background rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative w-full max-w-5xl max-h-[90vh] bg-background rounded-3xl overflow-hidden shadow-xl">
             <button
-              className="absolute top-3 right-3 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition"
+              className="absolute top-4 right-4 z-20 bg-black/60 text-white p-3 rounded-full hover:bg-black/80 transition"
               onClick={() => setSelectedRoom(null)}
+              aria-label="Close room details"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Carousel */}
-            <div className="relative w-full h-[400px]">
+            <div className="relative w-full h-[60vh] lg:h-[70vh]">
               <Image
                 src={selectedRoom.images[activeImageIndex] || "/placeholder.jpg"}
                 alt={getTranslatedRoomText(selectedRoom, "name")}
                 fill
-                className="object-cover rounded-2xl"
+                className="object-cover"
               />
               {selectedRoom.images.length > 1 && (
                 <>
