@@ -1,7 +1,13 @@
 export interface Room {
   id: string
   name: string
+  name_nl?: string
+  name_en?: string
+  name_fr?: string
   description: string
+  description_nl?: string
+  description_en?: string
+  description_fr?: string
   max_guests: number
   bed_type: string
   size_sqm: number

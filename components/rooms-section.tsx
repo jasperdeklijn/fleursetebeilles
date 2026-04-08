@@ -17,7 +17,7 @@ interface RoomsSectionProps {
 const translations = {
   nl: {
     title: "Onze Kamers",
-    bookNow: "Boek Nu",
+    viewDetails: "Bekijk details",
     guests: "gasten",
     size: "m²",
     amenities: "Voorzieningen",
@@ -26,7 +26,7 @@ const translations = {
   },
   en: {
     title: "Our Rooms",
-    bookNow: "Book Now",
+    viewDetails: "View details",
     guests: "guests",
     size: "m²",
     amenities: "Amenities",
@@ -35,7 +35,7 @@ const translations = {
   },
   fr: {
     title: "Nos Chambres",
-    bookNow: "Réserver",
+    viewDetails: "Voir détails",
     guests: "personnes",
     size: "m²",
     amenities: "Équipements",
@@ -48,6 +48,20 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
   const t = translations[lang]
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
+
+  const getTranslatedRoomText = (room: Room, key: "name" | "description") => {
+    const fallbackText = key === "name" ? room.name : room.description
+
+    if (lang === "nl") {
+      return key === "name" ? room.name_nl || fallbackText : room.description_nl || fallbackText
+    }
+
+    if (lang === "en") {
+      return key === "name" ? room.name_en || fallbackText : room.description_en || fallbackText
+    }
+
+    return key === "name" ? room.name_fr || fallbackText : room.description_fr || fallbackText
+  }
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const [centerItems, setCenterItems] = useState(false)
@@ -158,7 +172,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
                   >
                     <Image
                       src={room.images?.[0] || "/placeholder.jpg"}
-                      alt={room.name}
+                      alt={getTranslatedRoomText(room, "name")}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
@@ -170,8 +184,13 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
                   </div>
 
                   <CardContent className="p-6 text-left">
-                    <h3 className="text-2xl font-semibold mb-2">{room.name}</h3>
-                    <p className="text-muted-foreground mb-4 line-clamp-3">{room.description}</p>
+                    <h3 className="text-2xl font-semibold mb-2">{getTranslatedRoomText(room, "name")}</h3>
+                    <p
+                      className="text-muted-foreground mb-4 line-clamp-3 group-hover:line-clamp-none transition-all"
+                      title={getTranslatedRoomText(room, "description")}
+                    >
+                      {getTranslatedRoomText(room, "description")}
+                    </p>
 
                     <div className="flex flex-wrap gap-4 text-sm mb-4">
                       <div className="flex items-center gap-2">
@@ -215,11 +234,16 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
                           {t.perNight}
                         </span>
                       </span>
-                      {room.is_available && (
-                        <Button size="sm" className="rounded-full">
-                          {t.bookNow}
-                        </Button>
-                      )}
+                      <Button
+                        size="sm"
+                        className="rounded-full"
+                        onClick={() => {
+                          setSelectedRoom(room)
+                          setActiveImageIndex(0)
+                        }}
+                      >
+                        {t.viewDetails}
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -242,7 +266,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
               <Image
                 key={idx}
                 src={image}
-                alt={`${selectedRoom.name} ${idx}`}
+                alt={`${getTranslatedRoomText(selectedRoom, "name")} ${idx}`}
                 width={1200}
                 height={400}
                 priority={idx === activeImageIndex}
@@ -262,7 +286,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
             <div className="relative w-full h-[400px]">
               <Image
                 src={selectedRoom.images[activeImageIndex] || "/placeholder.jpg"}
-                alt={selectedRoom.name}
+                alt={getTranslatedRoomText(selectedRoom, "name")}
                 fill
                 className="object-cover rounded-2xl"
               />
@@ -285,8 +309,8 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
             </div>
 
             <div className="p-4 text-center">
-              <h3 className="text-xl font-semibold">{selectedRoom.name}</h3>
-              <p className="text-muted-foreground mt-2">{selectedRoom.description}</p>
+              <h3 className="text-xl font-semibold">{getTranslatedRoomText(selectedRoom, "name")}</h3>
+              <p className="text-muted-foreground mt-2">{getTranslatedRoomText(selectedRoom, "description")}</p>
             </div>
           </div>
         </div>
@@ -301,7 +325,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
               <Image
                 key={idx}
                 src={image}
-                alt={`${selectedRoom.name} ${idx}`}
+                alt={`${getTranslatedRoomText(selectedRoom, "name")} ${idx}`}
                 width={1200}
                 height={300}
                 priority={idx === activeImageIndex}
@@ -311,7 +335,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
 
           <DrawerContent className="max-h-[85vh] overflow-hidden">
             <DrawerHeader className="flex justify-between items-center px-4">
-              <DrawerTitle>{selectedRoom.name}</DrawerTitle>
+              <DrawerTitle>{getTranslatedRoomText(selectedRoom, "name")}</DrawerTitle>
               <Button
                 variant="ghost"
                 size="icon"
@@ -324,7 +348,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
             <div className="relative w-full h-[300px]">
               <Image
                 src={selectedRoom.images[activeImageIndex] || "/placeholder.jpg"}
-                alt={selectedRoom.name}
+                alt={getTranslatedRoomText(selectedRoom, "name")}
                 fill
                 className="object-cover"
               />
@@ -347,7 +371,7 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
             </div>
 
             <div className="p-4 text-center">
-              <p className="text-muted-foreground">{selectedRoom.description}</p>
+              <p className="text-muted-foreground">{getTranslatedRoomText(selectedRoom, "description")}</p>
             </div>
           </DrawerContent>
         </Drawer>

@@ -54,7 +54,13 @@ export function RoomsEditor() {
     setIsCreating(true)
     setEditingRoom({
       name: "",
+      name_nl: "",
+      name_en: "",
+      name_fr: "",
       description: "",
+      description_nl: "",
+      description_en: "",
+      description_fr: "",
       max_guests: 2,
       bed_type: "Queen Bed",
       size_sqm: 0,
@@ -248,64 +254,83 @@ export function RoomsEditor() {
                 className="mt-1"
               />
             </div>
+          </CardContent>
+        </Card>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Vertalingen</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid gap-4">
               <div>
-                <Label htmlFor="maxGuests">Maximale Gasten</Label>
+                <Label htmlFor="nameNl">Naam (NL)</Label>
                 <Input
-                  id="maxGuests"
-                  type="number"
-                  value={editingRoom.max_guests || 1}
-                  onChange={(e) => updateField("max_guests", Number.parseInt(e.target.value) || 1)}
+                  id="nameNl"
+                  value={editingRoom.name_nl || ""}
+                  onChange={(e) => updateField("name_nl", e.target.value)}
+                  placeholder="Bijv. Luxe Suite"
                   className="mt-1"
                 />
               </div>
 
               <div>
-                <Label htmlFor="bedType">Bed Type</Label>
-                <Input
-                  id="bedType"
-                  value={editingRoom.bed_type || ""}
-                  onChange={(e) => updateField("bed_type", e.target.value)}
-                  placeholder="e.g., King Bed"
+                <Label htmlFor="descriptionNl">Omschrijving (NL)</Label>
+                <Textarea
+                  id="descriptionNl"
+                  value={editingRoom.description_nl || ""}
+                  onChange={(e) => updateField("description_nl", e.target.value)}
+                  placeholder="Omschrijving in het Nederlands"
+                  rows={3}
                   className="mt-1"
                 />
               </div>
 
               <div>
-                <Label htmlFor="sizeSqm">Oppervlakte (m²)</Label>
+                <Label htmlFor="nameEn">Name (EN)</Label>
                 <Input
-                  id="sizeSqm"
-                  type="number"
-                  step="0.1"
-                  value={editingRoom.size_sqm || 0}
-                  onChange={(e) => updateField("size_sqm", Number.parseFloat(e.target.value) || 0)}
+                  id="nameEn"
+                  value={editingRoom.name_en || ""}
+                  onChange={(e) => updateField("name_en", e.target.value)}
+                  placeholder="e.g. Luxury Suite"
                   className="mt-1"
                 />
               </div>
 
               <div>
-                <Label htmlFor="price">Prijs per nacht (€)</Label>
-                <Input
-                  id="price"
-                  type="number"
-                  step="0.01"
-                  value={editingRoom.price_per_night || 0}
-                  onChange={(e) => updateField("price_per_night", Number.parseFloat(e.target.value) || 0)}
+                <Label htmlFor="descriptionEn">Description (EN)</Label>
+                <Textarea
+                  id="descriptionEn"
+                  value={editingRoom.description_en || ""}
+                  onChange={(e) => updateField("description_en", e.target.value)}
+                  placeholder="Room description in English"
+                  rows={3}
                   className="mt-1"
                 />
               </div>
-            </div>
 
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="isAvailable"
-                checked={editingRoom.is_available || false}
-                onChange={(e) => updateField("is_available", e.target.checked)}
-                className="h-4 w-4"
-              />
-              <Label htmlFor="isAvailable">Kamer is beschikbaar</Label>
+              <div>
+                <Label htmlFor="nameFr">Nom (FR)</Label>
+                <Input
+                  id="nameFr"
+                  value={editingRoom.name_fr || ""}
+                  onChange={(e) => updateField("name_fr", e.target.value)}
+                  placeholder="ex. Suite de Luxe"
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="descriptionFr">Description (FR)</Label>
+                <Textarea
+                  id="descriptionFr"
+                  value={editingRoom.description_fr || ""}
+                  onChange={(e) => updateField("description_fr", e.target.value)}
+                  placeholder="Description de la chambre en français"
+                  rows={3}
+                  className="mt-1"
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
