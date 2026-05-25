@@ -6,6 +6,7 @@ import { RoomsSection } from "@/components/rooms-section"
 import { PricingSection } from "@/components/pricing-section"
 import { ContactSection } from "@/components/contact-section"
 import ClientNav from "@/components/client-nav"
+import { LocationsSection } from "@/components/location-section"
 
 export const dynamic = 'force-dynamic'
 
@@ -115,6 +116,13 @@ export default async function HomePage({ searchParams }: { searchParams?: { lang
           <ContactSection
             title={content.contact_title || fallback.contact_title}
             description={content.contact_description || fallback.contact_description}
+            lang={lang}
+          />
+        </section>
+         <section id="location">
+          <LocationsSection
+            title={content.about_title || fallback.about_title}
+            description={content.about_description || fallback.about_description}
             lang={lang}
           />
         </section>

@@ -332,7 +332,7 @@ export function ContactSection({ title, description, lang = "nl" }: ContactSecti
                 <Phone className="h-6 w-6 text-primary" />
                 <div>
                   <h3 className="font-semibold">{t.phoneTitle}</h3>
-                  <a href="tel:+31744540521" className="text-muted-foreground">+31 744540521</a>
+                  <a href="tel:+33744540521" className="text-muted-foreground">+33 744540521</a>
                 </div>
               </div>
             </Card>
