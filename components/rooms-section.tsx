@@ -62,6 +62,21 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
 
     return key === "name" ? room.name_fr || fallbackText : room.description_fr || fallbackText
   }
+
+  const getTranslatedAmenities = (room: Room) => {
+    const fallbackAmenities = room.amenities || []
+
+    if (lang === "nl") {
+      return room.amenities_nl?.length ? room.amenities_nl : fallbackAmenities
+    }
+
+    if (lang === "en") {
+      return room.amenities_en?.length ? room.amenities_en : fallbackAmenities
+    }
+
+    return room.amenities_fr?.length ? room.amenities_fr : fallbackAmenities
+  }
+
   const [activeImageIndex, setActiveImageIndex] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const [centerItems, setCenterItems] = useState(false)
@@ -211,11 +226,11 @@ export function RoomsSection({ rooms, lang }: RoomsSectionProps) {
                       </div>
                     </div>
 
-                    {room.amenities && room.amenities.length > 0 && (
+                    {getTranslatedAmenities(room).length > 0 && (
                       <div className="mb-4">
                         <p className="text-sm font-semibold mb-1">{t.amenities}:</p>
                         <ul className="flex flex-wrap gap-2">
-                          {room.amenities.slice(0, 5).map((a, i) => (
+                          {getTranslatedAmenities(room).slice(0, 5).map((a, i) => (
                             <li
                               key={i}
                               className="flex items-center gap-1 bg-primary/10 text-primary rounded-full px-3 py-1 text-xs"

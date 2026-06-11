@@ -13,6 +13,9 @@ export interface Room {
   size_sqm: number
   price_per_night: number
   amenities: string[]
+  amenities_nl?: string[]
+  amenities_en?: string[]
+  amenities_fr?: string[]
   images: string[]
   is_available: boolean
   sort_order: number

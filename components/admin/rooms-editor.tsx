@@ -20,6 +20,7 @@ export function RoomsEditor() {
   const [isCreating, setIsCreating] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [newAmenity, setNewAmenity] = useState("")
+  const [newAmenityTranslations, setNewAmenityTranslations] = useState({ nl: "", en: "", fr: "" })
   const { toast } = useToast()
 
   useEffect(() => {
@@ -66,6 +67,9 @@ export function RoomsEditor() {
       size_sqm: 0,
       price_per_night: 0,
       amenities: [],
+      amenities_nl: [],
+      amenities_en: [],
+      amenities_fr: [],
       images: [],
       is_available: true,
       sort_order: rooms.length,
@@ -199,6 +203,29 @@ export function RoomsEditor() {
     updateField(
       "amenities",
       amenities.filter((_, i) => i !== index)
+    )
+  }
+
+  const addTranslatedAmenity = (lang: "nl" | "en" | "fr") => {
+    if (!editingRoom) return
+    const value = newAmenityTranslations[lang]?.trim()
+    if (!value) return
+
+    const existing = lang === "nl" ? editingRoom.amenities_nl || [] : lang === "en" ? editingRoom.amenities_en || [] : editingRoom.amenities_fr || []
+    updateField(
+      lang === "nl" ? "amenities_nl" : lang === "en" ? "amenities_en" : "amenities_fr",
+      [...existing, value]
+    )
+
+    setNewAmenityTranslations({ ...newAmenityTranslations, [lang]: "" })
+  }
+
+  const removeTranslatedAmenity = (lang: "nl" | "en" | "fr", index: number) => {
+    if (!editingRoom) return
+    const existing = lang === "nl" ? editingRoom.amenities_nl || [] : lang === "en" ? editingRoom.amenities_en || [] : editingRoom.amenities_fr || []
+    updateField(
+      lang === "nl" ? "amenities_nl" : lang === "en" ? "amenities_en" : "amenities_fr",
+      existing.filter((_, i) => i !== index)
     )
   }
 
@@ -414,6 +441,98 @@ export function RoomsEditor() {
               <Button onClick={addAmenity} disabled={!newAmenity.trim()}>
                 <Plus className="h-4 w-4" />
               </Button>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-3">
+              <div>
+                <p className="text-sm font-semibold mb-2">Voorzieningen (NL)</p>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {(editingRoom.amenities_nl || []).map((amenity, index) => (
+                    <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                      {amenity}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                        onClick={() => removeTranslatedAmenity("nl", index)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </Badge>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Voeg NL toe"
+                    value={newAmenityTranslations.nl}
+                    onChange={(e) => setNewAmenityTranslations({ ...newAmenityTranslations, nl: e.target.value })}
+                    onKeyPress={(e) => e.key === "Enter" && addTranslatedAmenity("nl")}
+                  />
+                  <Button onClick={() => addTranslatedAmenity("nl")} disabled={!newAmenityTranslations.nl.trim()}>
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold mb-2">Amenities (EN)</p>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {(editingRoom.amenities_en || []).map((amenity, index) => (
+                    <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                      {amenity}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                        onClick={() => removeTranslatedAmenity("en", index)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </Badge>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Add EN amenity"
+                    value={newAmenityTranslations.en}
+                    onChange={(e) => setNewAmenityTranslations({ ...newAmenityTranslations, en: e.target.value })}
+                    onKeyPress={(e) => e.key === "Enter" && addTranslatedAmenity("en")}
+                  />
+                  <Button onClick={() => addTranslatedAmenity("en")} disabled={!newAmenityTranslations.en.trim()}>
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              <div>
+                <p className="text-sm font-semibold mb-2">Équipements (FR)</p>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {(editingRoom.amenities_fr || []).map((amenity, index) => (
+                    <Badge key={index} variant="secondary" className="flex items-center gap-1">
+                      {amenity}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-4 w-4 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                        onClick={() => removeTranslatedAmenity("fr", index)}
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    </Badge>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Ajouter FR"
+                    value={newAmenityTranslations.fr}
+                    onChange={(e) => setNewAmenityTranslations({ ...newAmenityTranslations, fr: e.target.value })}
+                    onKeyPress={(e) => e.key === "Enter" && addTranslatedAmenity("fr")}
+                  />
+                  <Button onClick={() => addTranslatedAmenity("fr")} disabled={!newAmenityTranslations.fr.trim()}>
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
