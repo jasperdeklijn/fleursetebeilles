@@ -15,6 +15,13 @@ const AVAILABLE_IMAGES = [
   "/IMG_20251007_170933.jpg",
   "/IMG_20260416_165713.jpg",
   "/IMG_20260416_165854.jpg",
+  "/IMG_20260607_170008.jpg",
+  "/IMG_20260607_170145.jpg",
+  "/IMG_20260607_170605.jpg",
+  "/IMG_20260607_170627.jpg",
+  "/IMG_20260607_170453.jpg",
+  "/IMG_20260607_170336.jpg",
+  
 ]
 
 interface ImageSelectorProps {
