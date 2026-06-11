@@ -254,6 +254,54 @@ export function RoomsEditor() {
                 className="mt-1"
               />
             </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="maxGuests">Maximale gasten</Label>
+                <Input
+                  id="maxGuests"
+                  type="number"
+                  value={editingRoom.max_guests ?? 0}
+                  onChange={(e) => updateField("max_guests", Number(e.target.value))}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="bedType">Bed type</Label>
+                <Input
+                  id="bedType"
+                  value={editingRoom.bed_type || ""}
+                  onChange={(e) => updateField("bed_type", e.target.value)}
+                  placeholder="e.g. Queen Bed"
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="size">Grootte (m²)</Label>
+                <Input
+                  id="size"
+                  type="number"
+                  step="0.1"
+                  value={editingRoom.size_sqm ?? 0}
+                  onChange={(e) => updateField("size_sqm", Number(e.target.value))}
+                  className="mt-1"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="price">Prijs per nacht (€)</Label>
+                <Input
+                  id="price"
+                  type="number"
+                  step="0.01"
+                  value={editingRoom.price_per_night ?? 0}
+                  onChange={(e) => updateField("price_per_night", parseFloat(e.target.value))}
+                  className="mt-1"
+                />
+              </div>
+            </div>
           </CardContent>
         </Card>
 
