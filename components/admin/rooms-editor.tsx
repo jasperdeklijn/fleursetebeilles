@@ -379,7 +379,7 @@ export function RoomsEditor() {
               selectedImages={editingRoom.images || []}
               onImagesChange={(images) => updateField("images", images)}
               title="Kamer afbeeldingen"
-              maxImages={4}
+              maxImages={6}
             />
           </CardContent>
         </Card>
