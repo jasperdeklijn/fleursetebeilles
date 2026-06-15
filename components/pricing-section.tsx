@@ -20,7 +20,7 @@ export function PricingSection({ title, description, lang }: PricingSectionProps
   const extras: Extra[] = [
     {
       id: "breakfast",
-      price: 10,
+      price: 12,50,
       name: { nl: "Ontbijt", en: "Breakfast (Continental style)", fr: "Petit déjeuner" },
       note: { en: "per person", nl: "per persoon", fr: "par personne" },
     },
